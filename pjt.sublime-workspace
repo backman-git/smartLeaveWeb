@@ -1,0 +1,889 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"I",
+				"ImageFactory"
+			],
+			[
+				"i",
+				"ImageFactory"
+			],
+			[
+				"im",
+				"image_y"
+			],
+			[
+				"ima",
+				"image_x"
+			],
+			[
+				"Im",
+				"Image"
+			],
+			[
+				"ur",
+				"urlToImage"
+			],
+			[
+				"re",
+				"require"
+			],
+			[
+				"upLo",
+				"upLoadForm"
+			],
+			[
+				"s",
+				"square"
+			],
+			[
+				"img",
+				"imgList"
+			],
+			[
+				"load",
+				"load_data2"
+			],
+			[
+				"num",
+				"num_classes"
+			],
+			[
+				"lo",
+				"load_data"
+			],
+			[
+				"di",
+				"digit1"
+			],
+			[
+				"n",
+				"num_data"
+			],
+			[
+				"ge",
+				"generator"
+			],
+			[
+				"tes",
+				"test_datagen"
+			],
+			[
+				"win",
+				"winWidth"
+			],
+			[
+				"d",
+				"digit1"
+			],
+			[
+				"c",
+				"CAPTCHA"
+			],
+			[
+				"get",
+				"getCAPTCHA"
+			],
+			[
+				"fi",
+				"fileName"
+			],
+			[
+				"wi",
+				"winHeight"
+			],
+			[
+				"le",
+				"leftPointY"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "views/mainPage.jade",
+			"settings":
+			{
+				"buffer_size": 791,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "routes/mainPage.coffee",
+			"settings":
+			{
+				"buffer_size": 196,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/stylesheets/mainPage.less",
+			"settings":
+			{
+				"buffer_size": 91,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "views/editForm.jade",
+			"settings":
+			{
+				"buffer_size": 769,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app.coffee",
+			"settings":
+			{
+				"buffer_size": 1654,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/lessc/lessc.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					""
+				],
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					""
+				],
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/coffee.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					""
+				],
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/coffee.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					""
+				],
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					""
+				],
+				[
+					"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				],
+				[
+					"Packages/User/python2.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Better CoffeeScript/CoffeeScript.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/Python 3/Python3.sublime-build",
+					""
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				],
+				[
+					"Packages/User/python2.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/python2.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/coffee.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				],
+				[
+					"Packages/User/JavaCompile.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/chrome.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/coffee.sublime-build",
+					""
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/jade.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/chrome.sublime-build",
+					""
+				],
+				[
+					"Packages/User/jade.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/jade.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/lessc/lessc.sublime-build",
+					""
+				],
+				[
+					"Packages/lessc/lessc.sublime-build",
+					"Non-Minified"
+				]
+			],
+			[
+				"Packages/lessc/lessc.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"intall",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: list",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: remove pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"insatll",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 174.0,
+		"history":
+		[
+			"import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read()); print 'Please restart Sublime Text to finish installation",
+			"import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read()); print 'Please restart Sublime Text to finish installation'",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read()); print 'Please restart Sublime Text to finish installation'"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/bin",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/images",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/javascripts",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/uploadForms",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views"
+	],
+	"file_history":
+	[
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/editForm.css",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/editForm.jade",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/javascripts/ImageUtility.js",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/editForm.less",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/ImageUtility.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/upLoadForm.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/app.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/editForm.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/bin/www.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/package.json",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/users.coffee",
+		"/C/Users/development/Desktop/hack/hack.py",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Installed Packages/Better CoffeeScript.sublime-package",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/ImageUtility.js",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/style.less",
+		"/C/Users/development/Desktop/smartLeaveWeb/style.css",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/index.jade",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/index.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/ImageUtility.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/app.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/package.json",
+		"/C/Users/development/Desktop/smartLeaveWeb/WP.sublime-workspace",
+		"/C/Users/development/Desktop/smartLeaveWeb/test.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/main.jade",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/jade.sublime-build",
+		"/C/Users/development/Desktop/buildScript/Java.sublime-package",
+		"/C/Users/development/Desktop/buildScript/jade.sublime-build",
+		"/C/Users/development/Desktop/buildScript/coffee.sublime-build",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Installed Packages/Jade.sublime-package",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/chrome.sublime-build",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Installed Packages/Jade Build.sublime-package",
+		"/C/Users/development/Desktop/leetcode/test.java",
+		"/C/Users/development/Desktop/smartLeaveWeb/main.html",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/coffee.sublime-build",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/JavaCompile.sublime-build",
+		"/C/Users/development/Downloads/zombies_ate_my_neighbors.tmTheme",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/untitled.sublime-build",
+		"/C/Users/development/Desktop/smartLeaveWeb/test.py",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/Better CoffeeScript/CoffeeScript.sublime-settings",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/Better CoffeeScript/Keymaps/Default (Windows).sublime-keymap",
+		"/C/Users/development/AppData/Roaming/Sublime Text 3/Packages/User/CoffeeScript.sublime-settings",
+		"/C/Users/development/Desktop/hack/test.coffee",
+		"/C/Users/development/Desktop/hack/Binarization.py",
+		"/C/Users/development/Desktop/hack/digitSet.py",
+		"/C/Users/development/Desktop/hack/CNN.py",
+		"/C/Users/development/Desktop/hack/cutOutDigit.py",
+		"/C/Users/development/Desktop/hack/collectData.py",
+		"/C/Users/development/Desktop/hack/digitSet.pyc",
+		"/C/Users/development/Desktop/hack/showImage.py",
+		"/C/Users/development/Desktop/hack/genDataSet.py",
+		"/C/Users/development/Desktop/hack/test.py",
+		"/C/Users/development/Desktop/hack/genDataSet-old.pyc",
+		"/C/Users/development/Desktop/hack/hihi.html",
+		"/C/Users/development/.keras/keras.json",
+		"/C/Users/development/Desktop/topcoder/code/SRM 557/GreatFairyWar.py",
+		"/C/Users/development/Desktop/topcoder/code/Inv 2001 Semi A+B/MatchMaker.java",
+		"/C/Users/development/Desktop/hack/genDataSet.pyc",
+		"/C/Users/development/Desktop/hack/cut.OutDigitpy",
+		"/C/Users/development/Desktop/hack/first_try.hdf5",
+		"/C/Users/development/Desktop/hack/cut.py",
+		"/C/Users/development/Desktop/hack/tmp/genDataSet.py",
+		"/C/Users/development/Desktop/hack/tmp/test.py",
+		"/C/Users/development/Desktop/hack/main.py",
+		"/C/Users/development/Desktop/hack/新文字文件.txt",
+		"/C/Users/development/Desktop/hack/e學中心.html"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"upLoadForm",
+			"editForm",
+			"saveFormToImg",
+			"editForm",
+			"users",
+			"selector",
+			"\"\n",
+			"getCAPTCHA",
+			"cutOutDigit",
+			"SGD",
+			"leftShift",
+			"1"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"digit4Shift",
+			"digit3Shift",
+			"digit2Shift",
+			"digit1Shift",
+			"4",
+			"3"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "views/mainPage.jade",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 791,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								637,
+								637
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 46.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "routes/mainPage.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 196,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2,
+								2
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/stylesheets/mainPage.less",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 91,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								87,
+								87
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "views/editForm.jade",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 769,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36,
+								90
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1654,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								913,
+								913
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 214.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/lessc/lessc.sublime-build",
+	"project": "pjt.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 211.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

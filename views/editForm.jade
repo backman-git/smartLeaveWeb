@@ -1,0 +1,36 @@
+doctype html
+
+
+
+html
+	title
+	head
+		link(rel="stylesheet" type="text/css" href="#{style}")
+
+	body
+		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
+		script(src="#{script}")
+		
+		img(src="#{form}",id="Form" )
+
+		div(class="editor")
+			canvas(width="850dp" height="1150dp" id="Canvas" class="canvas")
+			
+			p(id="name",class="name",size="50px")
+				font(size ="20px") 姓 名 
+
+
+			
+			button(id="PersonalMarkButton" class="personalMarkButton") 蓋章
+
+			button(id="DuptyMarkButton" class="duptyMarkButton") 蓋章
+
+			button(id="supervisor" class="supervisorMarkButton") 蓋章
+				
+
+			textarea(class="textArea",rows="10",cols="20") XXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXX
+
+
+			button(id="submit" class="submitButton") 上傳
+
+
