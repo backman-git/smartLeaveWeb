@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"a",
+				"availableDay"
+			],
+			[
+				"pr",
+				"printTextToForm"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"uk",
+				"uk-parent"
+			],
+			[
+				"l",
+				"LSys"
+			],
+			[
+				"ne",
+				"newParent"
+			],
+			[
 				"I",
 				"ImageFactory"
 			],
@@ -104,48 +128,68 @@
 	"buffers":
 	[
 		{
-			"file": "views/mainPage.jade",
-			"settings":
-			{
-				"buffer_size": 791,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "routes/mainPage.coffee",
-			"settings":
-			{
-				"buffer_size": 196,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/stylesheets/mainPage.less",
-			"settings":
-			{
-				"buffer_size": 91,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "views/editForm.jade",
 			"settings":
 			{
-				"buffer_size": 769,
+				"buffer_size": 2051,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "app.coffee",
+			"contents": "\n\n\n\n\n\n$(document).ready ->\n\n\t$(\"#Form\").hide()\n\n\n\n\n\n\n\tImageFactory =(ctx)->\n\t\tthis.ctx=ctx\n\t\tthis.drawImage = (image_arg,image_x,image_y)->\n\t\t\t_this= this\n\t\t\timage = new Image()\n\t\t\timage.onload = () ->\n\t\t\t\t_this.ctx.drawImage(image,image_x,image_y)\n\t\t\t\treturn \n\t\t\timage.src=image_arg\t\n\t\t\treturn\n\t\treturn\n\n\n\t\n\n\n\n\n\n\tshowMark = (event ) ->\n\t\t$(this).text(\"\")\n\t\t\n\t\tstr1=\"url(\"\n\t\tstr2=\")\"\n\t\tstr3=str1.concat event.data.p1\n\t\tstr3=str3.concat str2\n\t\t$(this).css(\"background-image\",str3  )\n\t\t$(this).css(\"background-image\",str3  )\n\t\t$(this).css(\"height\",\"50px\"  )\n\t\t$(this).css(\"width\",\"120px\"  )\n\t\t$(this).css(\"left\",\"350px\"  )\n\t\treturn\n\n\n\tprintTextToForm=(ID)->\n\t\tctx = $(\"#Canvas\")[0].getContext('2d')\n\t\t#name\n\n\t\tctx.font = \"45px Arial\"\n\t\tx=parseInt ( $(\"#\"+ID).css(\"left\") )\n\t\n\t\t\n\t\ty=parseInt( $(\"#\"+ID).css(\"top\") )\n\t\t#bias\n\t\ty+=40\n\t\tctx.fillText($(\"#\"+ID).text(), x , y )\n\t\t\n\t\treturn\n\n\tprintImgtoForm=(ID)->\n\t\tctx = $(\"#Canvas\")[0].getContext('2d')\n\t\timageFactory =new ImageFactory ctx\n\t\tbgImg=$(\"#\"+ID).css(\"background-image\")\n\t\tbgImg=bgImg.replace('url(','').replace(')','').replace(/\\\"/gi, \"\")\n\t\timageFactory.drawImage( bgImg , parseInt($(\"#\"+ID).css(\"left\")) , parseInt($(\"#\"+ID).css(\"top\")) ) \n\n\t\treturn \n\n\n\tsaveFormToImg = ()->\n\n\t\t\n\n\t\tprintTextToForm(\"name\")\n\t\tprintTextToForm(\"careerDay\")\n\t\tprintTextToForm(\"availableDay\")\n\t\tprintTextToForm(\"useDay\")\n\t\tprintImgtoForm(\"PersonalMarkButton\")\n\t\tprintImgtoForm(\"DuptyMarkButton\")\n\t\tprintImgtoForm(\"supervisor\")\n\n\n\t\t\n\n\n\t\t\n\t\t\n\t\t#bug should fix\n\t\tsaveImgtoServer \"upLoadForm\", $(\"#Canvas\")[0].toDataURL()\n\t\treturn \n\n\n\tsaveImgtoServer =(url,data)->\n\n\t\t$.post url,\n\t\t\t\t{image:data},\n\t\t\t\t(data,status)->\n\t\t\t\t\t alert(\"Data: \" + data + \"\\nStatus: \" + status);\n\t\t\t\t\t return\n\t\treturn\n\n\n\t\treturn\n\n\n\n\n\t$(\"#submit\").click(saveFormToImg)\n\n\t$('#PersonalMarkButton').click({p1:\"./images/personalMark.jpg\"},showMark)\n\n\t$('#DuptyMarkButton').click({p1:\"./images/personalMark.jpg\"},showMark)\n\n\t$('#supervisor').click({p1:\"./images/personalMark.jpg\"},showMark)\n\n\n\treturn\n\n\n\n\n\n$(window).load ->\n\n\trenderForm = ()->\n\t\tctx = $(\"#Canvas\")[0].getContext('2d')\n\t\tform = $(\"#Form\")[0]\n\t\tctx.drawImage(form,0,0)\n\n\t\treturn\n\trenderForm()\n\n\n\t$(\".loader\").fadeOut(\"slow\")\n\t\n\treturn\n",
+			"file": "coffee/ImageUtility.coffee",
+			"file_size": 2340,
+			"file_write_time": 131348339242541469,
 			"settings":
 			{
-				"buffer_size": 1654,
+				"buffer_size": 2201,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "routes/editForm.coffee",
+			"settings":
+			{
+				"buffer_size": 355,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/stylesheets/editForm.less",
+			"settings":
+			{
+				"buffer_size": 1365,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "views/mainPage.jade",
+			"settings":
+			{
+				"buffer_size": 755,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/javascripts/ImageUtility.js",
+			"settings":
+			{
+				"buffer_size": 2824,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/development/Desktop/smartLeaveWeb/testPool/test.coffee",
+			"settings":
+			{
+				"buffer_size": 945,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -523,9 +567,9 @@
 	[
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/bin",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/images",
-		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/javascripts",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/uploadForms",
@@ -533,13 +577,23 @@
 	],
 	"file_history":
 	[
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/mainPage.less",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/mainPage.css",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/mainPage.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/LeaveSystem.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/mainPage.jade",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/index.jade",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/app.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/index.coffee",
+		"/C/Users/development/Desktop/leetcode/tictoe/main.py",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/mainPageControl.coffee",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/javascripts/mainPage.js",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/editForm.css",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/editForm.jade",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/javascripts/ImageUtility.js",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/editForm.less",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/ImageUtility.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/upLoadForm.coffee",
-		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/app.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/editForm.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/bin/www.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/package.json",
@@ -549,8 +603,6 @@
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/ImageUtility.js",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets/style.less",
 		"/C/Users/development/Desktop/smartLeaveWeb/style.css",
-		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/index.jade",
-		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/routes/index.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/ImageUtility.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/app.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/smartLeave/package.json",
@@ -601,7 +653,7 @@
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 44.0
 	},
 	"find_in_files":
 	{
@@ -650,24 +702,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "views/mainPage.jade",
+					"file": "views/editForm.jade",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 791,
+						"buffer_size": 2051,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								637,
-								637
+								1098,
+								1098
 							]
 						],
 						"settings":
@@ -676,27 +728,56 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 46.0,
+						"translation.y": 1428.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "routes/mainPage.coffee",
+					"file": "coffee/ImageUtility.coffee",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 196,
+						"buffer_size": 2201,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2,
-								2
+								47,
+								47
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 840.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "routes/editForm.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 355,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								329,
+								329
 							]
 						],
 						"settings":
@@ -707,52 +788,54 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/stylesheets/mainPage.less",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 91,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								87,
-								87
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/LESS/LESS.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "views/editForm.jade",
-					"semi_transient": true,
+					"file": "public/stylesheets/editForm.less",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 769,
+						"buffer_size": 1365,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								36,
-								90
+								881,
+								881
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2184.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "views/mainPage.jade",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 755,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								393,
+								393
 							]
 						],
 						"settings":
@@ -761,40 +844,68 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 224.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "app.coffee",
+					"buffer": 5,
+					"file": "public/javascripts/ImageUtility.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1654,
+						"buffer_size": 2824,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								913,
-								913
+								1165,
+								1165
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 540.0,
+						"translation.y": 710.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/development/Desktop/smartLeaveWeb/testPool/test.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 945,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								196,
+								196
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -802,7 +913,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 36.0
 	},
 	"input":
 	{
@@ -839,11 +950,11 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Packages/lessc/lessc.sublime-build",
+	"pinned_build_system": "Packages/Better CoffeeScript/CoffeeScript.sublime-build",
 	"project": "pjt.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 68.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -881,7 +992,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 211.0,
+	"side_bar_width": 106.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

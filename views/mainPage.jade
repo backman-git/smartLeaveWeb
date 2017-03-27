@@ -5,33 +5,36 @@ doctype html
 html
 	title
 	head
-		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/css/uikit.min.css")
-		link(rel="stylesheet" type="text/css" href="#{style}")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css")
+		
 
 	body
 		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/js/uikit.js")
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/js/uikit-icons.min.js")
-		
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js")
 		
 
-		ul(uk-accordion)
-			li
-				h3(class="uk-accordion-title") hihi
-				div(class="uk-accordion-content") ffff
+		nav(class="uk-navbar")
+			div(class="uk-navbar-flip")
+				ul(class="uk-navbar-nav")
+					li
+						a(href="./editForm") 新增假單
+					li
+						a(href="#") 登出
 
-
-		table(class ="uk-table")
-			caption table caption
+		
+		table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
 			thead
 				tr
-					th table heading
-					th ggg
-					th eee
+					th ID
+					th 日期
+					th 職務代理人
+
 			tbody
-				tr
-					td bodyyyyy
-					td dfdf
-					td ddd
+				
+				for l in historyList
+					tr
+						th= l["fileID"]
+						th= l["date"]
+						th= l["roles"]["deputy"] 
 			
 

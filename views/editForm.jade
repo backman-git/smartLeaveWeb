@@ -5,30 +5,64 @@ doctype html
 html
 	title
 	head
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css")
 		link(rel="stylesheet" type="text/css" href="#{style}")
+		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.css")
+		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.gradient.min.css")
 
 	body
 		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/components/datepicker.min.js")
 		script(src="#{script}")
+
 		
+		div(class="loader")
+
+		nav(class="uk-navbar")
+			div(class="uk-navbar-flip")
+				ul(class="uk-navbar-nav")
+					li
+						a(href="./editForm") 新增假單
+					li
+						a(href="#") 登出
+			
+
 		img(src="#{form}",id="Form" )
 
 		div(class="editor")
 			canvas(width="850dp" height="1150dp" id="Canvas" class="canvas")
 			
-			p(id="name",class="name",size="50px")
-				font(size ="20px") 姓 名 
+			p(id="name",class="name",size="50px") 
+				font(size ="20px") #{name}
 
+			p(id="careerDay",class="careerDay",size="50px")
+				font(size ="20px") #{startCareerDay} 
+
+			p(id="availableDay",class="availableDay",size="50px")
+				font(size ="20px") #{availableDay} 
+
+			div(id="leaveDate" class="leaveDate")
+				form(class ="uk-form") 從
+					input(id="startDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+				br
+				br
+				form(class ="uk-form") 到
+					input(id="finishDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+
+
+			p(id="useDay",class="useDay",size="50px")
+				font(size ="20px") #{useDay} 
 
 			
-			button(id="PersonalMarkButton" class="personalMarkButton") 蓋章
+			button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
 
-			button(id="DuptyMarkButton" class="duptyMarkButton") 蓋章
+			button(id="DuptyMarkButton" class="duptyMarkButton" value="#{markID}") 蓋章
 
-			button(id="supervisor" class="supervisorMarkButton") 蓋章
+			button(id="supervisor" class="supervisorMarkButton" value="#{markID}") 蓋章
 				
 
-			textarea(class="textArea",rows="10",cols="20") XXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXX
+			textarea(class="textArea",rows="10",cols="20") 休假好棒棒
 
 
 			button(id="submit" class="submitButton") 上傳

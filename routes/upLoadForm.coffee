@@ -17,7 +17,7 @@ router.get '/', (req, res, next) ->
 router.post '/',(req,res)->
 	res.send "yes"
 
-	urlToImage './uploadForms/image.png',req.body.image
+	urlToImage './uploadForms/123.png',req.body.image
 	return 
 
 module.exports = router
