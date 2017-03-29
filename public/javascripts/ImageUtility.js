@@ -59,14 +59,22 @@
       printDayToForm("finishDay");
       printTextToForm("availableDay");
       printTextToForm("useDay");
-      printImgtoForm("PersonalMarkButton");
-      printImgtoForm("DuptyMarkButton");
-      printImgtoForm("supervisor");
-      saveImgtoServer("upLoadForm", $("#Canvas")[0].toDataURL());
+      if ($("#PersonalMarkButton").length) {
+        printImgtoForm("PersonalMarkButton");
+      }
+      if ($("#DeputyMarkButton").length) {
+        printImgtoForm("DeputyMarkButton");
+      }
+      if ($("#supervisorButton").length) {
+        printImgtoForm("supervisorButton");
+      }
+      saveImgtoServer("/mainPage/upLoadForm", $("#Canvas")[0].toDataURL());
     };
     saveImgtoServer = function(url, data) {
       $.post(url, {
-        image: data
+        image: data,
+        name: $("#name").text(),
+        deputyName: $("#deputyName").val()
       }, function(data, status) {});
       return;
     };
@@ -74,13 +82,13 @@
     nameStr = $("#name").text();
     nameStr = nameStr.replace(" ", "");
     $('#PersonalMarkButton').click({
-      p1: "./images/" + nameStr + ".jpg"
+      p1: "../images/" + nameStr + ".jpg"
     }, showMark);
-    $('#DuptyMarkButton').click({
-      p1: "./images/" + nameStr + ".jpg"
+    $('#DeputyMarkButton').click({
+      p1: "../images/" + nameStr + ".jpg"
     }, showMark);
-    $('#supervisor').click({
-      p1: "./images/" + nameStr + ".jpg"
+    $('#supervisorButton').click({
+      p1: "../images/" + nameStr + ".jpg"
     }, showMark);
   });
 

@@ -23,7 +23,7 @@ html
 			div(class="uk-navbar-flip")
 				ul(class="uk-navbar-nav")
 					li
-						a(href="./editForm") 新增假單
+						a(href="./") 返回主頁
 					li
 						a(href="#") 登出
 			
@@ -54,13 +54,20 @@ html
 			p(id="useDay",class="useDay",size="50px")
 				font(size ="20px") #{useDay} 
 
-			
-			button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
+			case role
 
-			button(id="DuptyMarkButton" class="duptyMarkButton" value="#{markID}") 蓋章
-
-			button(id="supervisor" class="supervisorMarkButton" value="#{markID}") 蓋章
+				when "individual"
+					button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
+					div(class="deputyInput")
+						p 請指定代理人
+						input(type="text" id="deputyName" )
 				
+				when "deputy"
+					button(id="DeputyMarkButton" class="deputyMarkButton" value="#{markID}") 蓋章
+
+				when "supervisor"
+					button(id="supervisorButton" class="supervisorMarkButton" value="#{markID}") 蓋章
+			
 
 			textarea(class="textArea",rows="10",cols="20") 休假好棒棒
 

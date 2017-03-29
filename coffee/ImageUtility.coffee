@@ -103,10 +103,14 @@ $(document).ready ->
 		printTextToForm("useDay")
 
 
+		if $("#PersonalMarkButton").length
+			printImgtoForm("PersonalMarkButton")
 
-		printImgtoForm("PersonalMarkButton")
-		printImgtoForm("DuptyMarkButton")
-		printImgtoForm("supervisor")
+		if $("#DeputyMarkButton").length
+			printImgtoForm("DeputyMarkButton")
+
+		if $("#supervisorButton").length
+			printImgtoForm("supervisorButton")
 
 
 		
@@ -115,14 +119,14 @@ $(document).ready ->
 		
 		
 		#bug should fix
-		saveImgtoServer "upLoadForm", $("#Canvas")[0].toDataURL()
+		saveImgtoServer "/mainPage/upLoadForm", $("#Canvas")[0].toDataURL()
 		return 
 
 
 	saveImgtoServer =(url,data)->
 
 		$.post url,
-				{image:data},
+				{image:data,name:$("#name").text(),deputyName:$("#deputyName").val()},
 				(data,status)->
 					 
 					 return
@@ -138,11 +142,11 @@ $(document).ready ->
 
 	nameStr=$("#name").text()
 	nameStr=nameStr.replace " ",""
-	$('#PersonalMarkButton').click({p1:"./images/"+nameStr+".jpg"},showMark)
+	$('#PersonalMarkButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
 
-	$('#DuptyMarkButton').click({p1:"./images/"+nameStr+".jpg"},showMark)
+	$('#DeputyMarkButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
 
-	$('#supervisor').click({p1:"./images/"+nameStr+".jpg"},showMark)
+	$('#supervisorButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
 
 
 	return

@@ -6,6 +6,8 @@ cookieParser = require 'cookie-parser'
 bodyParser = require 'body-parser'
 
 
+
+
 #route
 
 routes = require './routes/index'
@@ -13,12 +15,15 @@ users = require './routes/users'
 
 #------
 mainPage = require './routes/mainPage'
-editForm =require './routes/editForm'
-upLoadFile = require "./routes/upLoadForm"
+
 
 
 
 app = express()
+
+
+
+
 
 
 
@@ -44,8 +49,6 @@ app.use express.static path.join __dirname, 'public'
 app.use '/mainPage', mainPage
 app.use '/', routes
 app.use '/users', users
-app.use '/editForm',editForm
-app.use '/upLoadForm',upLoadFile
 
 
 

@@ -17,7 +17,7 @@ html
 			div(class="uk-navbar-flip")
 				ul(class="uk-navbar-nav")
 					li
-						a(href="./editForm") 新增假單
+						a(href="/mainPage/editForm") 新增假單
 					li
 						a(href="#") 登出
 
@@ -30,11 +30,14 @@ html
 					th 職務代理人
 
 			tbody
-				
-				for l in historyList
-					tr
-						th= l["fileID"]
-						th= l["date"]
-						th= l["roles"]["deputy"] 
-			
+
+				if historyList
+
+					for l in historyList
+						tr
+							th= l["fileID"]
+							th= l["date"]
+							th= l["roles"]["deputy"] 
+				else
+					p 沒有資料
 

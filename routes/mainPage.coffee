@@ -1,4 +1,6 @@
 express = require 'express'
+fs = require 'fs'
+
 router = express.Router()
 
 
@@ -33,29 +35,86 @@ c3= new Node( new People("王邦晟",3,"隊員"),b3)
 LSys = new LeaveSystem(top) 
 
 
+
+
+
+
 #----------------------------------------------------
+
+
 
 
 router.get '/', (req, res, next) ->
 
-	a=new LeaveForm("許木坤","20170101","楊文宏")
-	b=new LeaveForm("許木坤","20170102","楊文宏")
-	LSys.addNewForm(a)
-	LSys.addNewForm(b)
-	#LSys.showArchitecture()
+	
+	LSys.showArchitecture()
 	formList=LSys.getPersonFormListByName("許木坤")
-
-
-
 	res.render 'mainPage',
 	style: "./stylesheets/mainPage.css",
 	historyList: formList
 
+	
+
+#upload
+router.post '/uploadForm',(req,res)->
+
+	
+	name=req.body.name.replace " ",""
+	dt=genDate()
+	urlToImage './dataPool/forms/'+dt+"-"+name+'.png',req.body.image
+
+	#create data object LeaveForm("許木坤","20170101","楊文宏")
+	newForm=new LeaveForm(name,genDate(),req.body.deputyName)
+	
+	console.log newForm
+	LSys.addNewForm(newForm)
 
 
+	 
+
+
+router.get '/editForm', (req, res, next) ->
+  res.render 'editForm',
+    script: '../javascripts/ImageUtility.js'
+    form: "../images/form.png"
+    style: "../stylesheets/editForm.css"
+    name:"許木坤"
+    role:"individual"
+    FID:"123"
+    markID: 1
+    startCareerDay:"2017/01/01"
+    availableDay:200
+    useDay:199
+
+    
 
 
 
 
 
 module.exports = router
+
+
+#============================
+
+urlToImage = (path,url) ->
+
+	data=url.replace /^data:image\/\w+;base64,/, ""
+
+	#console.log url
+	buf = new Buffer data, 'base64'
+	fs.writeFile path,buf
+	return 
+
+
+
+genDate =()->
+	dt = new Date()
+	year=dt.getFullYear()
+	month=dt.getMonth()+1
+	day=dt.getDate()
+	h=dt.getHours()
+	m=dt.getMonth() 
+	sec=dt.getSeconds() 
+
+	return year+""+month+""+day+""+h+""+m+""+sec
