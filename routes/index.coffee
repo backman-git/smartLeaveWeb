@@ -8,12 +8,13 @@ session = require('express-session')
 #RedisStore = require('connect-redis')(session)
 
 
+# only for test should use in dataBase
+users = {'人事室': {username: '假單庫',password: '123',id:'0'}, '許木坤': {username: '許木坤',password: '1',id: '101'},'林子博': {username: '林子博',password: '5',id: '202'},'楊文宏': {username: '楊文宏',password: '2',id: '303'}}
+idTable={'101':"許木坤",'202':"林子博",'303':"楊文宏",'0':"假單庫"}
 
-users = {zack: {username: 'zack',password: '1234',id: 1},node: {username: 'node',password: '5678',id: 2},}
 
-
-localStrategy = new LocalStrategy({usernameField: 'username',passwordField: 'password'},(username,password,done)->
-		user =user[username]
+localStrategy = new LocalStrategy({usernameField: 'username',passwordField: 'pwd'},(username,password,done)->
+		user =users[username]
 		if user is null 
 			return done null,false,{message: 'Invalid user'}
 		if user.password isnt password
@@ -27,7 +28,6 @@ localStrategy = new LocalStrategy({usernameField: 'username',passwordField: 'pas
 Passport.use( 'local', localStrategy );
 
 
-
 router.use Passport.initialize()
 
 
@@ -35,7 +35,7 @@ router.use Passport.initialize()
 
 
 # GET home page.
-router.get '/', (req, res, next) ->
+router.get '/login', (req, res, next) ->
 	
 
 	res.render "login"
@@ -44,5 +44,7 @@ router.get '/', (req, res, next) ->
 module.exports = router
 
 
-router.post '/', Passport.authenticate('local',{session:false}),(req,res)->
-	res.send "user ID"+req.user.id
+router.post '/login',Passport.authenticate( 'local', {session:false} ),(req,res)->
+
+	res.cookie "ID", req.user.id
+	res.redirect("../mainPage")

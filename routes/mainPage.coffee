@@ -1,92 +1,181 @@
 express = require 'express'
 fs = require 'fs'
 
-router = express.Router()
-
-
-#-----------main componment--------------------------
-
 Node =require "../coffee/Node"
 People =require "../coffee/People"
 LeaveForm = require "../coffee/LeaveForm"
-LeaveSystem = require "../coffee/LeaveSystem"
-
-# template tree
-
-
-
-top= new Node( new People("假單庫",0,"假單庫"),null)
-a1= new Node( new People("劉采鑫",1,"大隊長"),top)
-a2= new Node( new People("沈俊興",1,"大隊長"),top)
-a3= new Node( new People("陳岳謄",1,"大隊長"),top)
-
-b1= new Node( new People("林子博",2,"分隊長"),a1)
-b2= new Node( new People("陳勝佑",2,"分隊長"),a2)
-b3= new Node( new People("何建樺",2,"分隊長"),a3)
-
-
-c1= new Node( new People("許木坤",3,"隊員"),b1)
-c2= new Node( new People("楊文宏",3,"隊員"),b1)
-c3= new Node( new People("王邦晟",3,"隊員"),b3)
+LSysSingleton = require '../coffee/leaveSystemSingleton'
+router = express.Router()
 
 
 
 
-LSys = new LeaveSystem(top) 
 
+
+# only for test should use in dataBase
+users = {'人事室': {username: '假單庫',password: '123',id:'0'}, '許木坤': {username: '許木坤',password: '1',id: '101'},'林子博': {username: '林子博',password: '5',id: '202'},'楊文宏': {username: '楊文宏',password: '2',id: '303'}}
+idTable={'101':"許木坤",'202':"林子博",'303':"楊文宏",'0':"假單庫"}
 
 
 
 
 
 #----------------------------------------------------
-
-
+LSys = LSysSingleton.get()
 
 
 router.get '/', (req, res, next) ->
 
-	
-	LSys.showArchitecture()
-	formList=LSys.getPersonFormListByName("許木坤")
-	res.render 'mainPage',
-	style: "./stylesheets/mainPage.css",
-	historyList: formList
+	ID=req.cookies["ID"]
+	#BX should change
+	name = idTable[ID]
+
+	if ID  == users['人事室']['id']
+		#if want change control page
+		pNode=LSys.getPeopleNodeByName(name)
+		pFormList=LSys.getPersonFormListByName(pNode["name"])
+		pWList=pNode.getWaitHQueue()
+		
+		console.log pWList
+
+		res.render 'mainPage',
+		mainScript: '../javascripts/MainUtility.js'
+		name: pNode["name"],
+		style: "./stylesheets/mainPage.css",
+		historyList: pFormList,
+		processList: pWList
+		role:"personnel"
+
+	else
+		pNode=LSys.getPeopleNodeByName(name)
+		pFormList=LSys.getPersonFormListByName(pNode["name"])
+		pWList=pNode.getWaitHQueue()
+		
+		console.log pWList
+
+		res.render 'mainPage',
+		mainScript: '../javascripts/MainUtility.js'
+		name: pNode["name"],
+		style: "./stylesheets/mainPage.css",
+		historyList: pFormList,
+		processList: pWList,
+		role:"individual"
+
+
+
+
+
+
+
+router.get '/editForm' , (req,res,next)->
+	#BX
+	name = idTable[req.cookies["ID"]]
+	pNode=LSys.getPeopleNodeByName(name)
+
+
+
+	if req.query.fID =="new"
+
+				
+		res.render 'formEditor',
+		imgScript: '../javascripts/ImageUtility.js'
+		mainScript: '../javascripts/MainUtility.js'
+		form: "../images/form.png"
+		style: "../stylesheets/editForm.css"
+		name: pNode["name"]
+		startCareerDay:pNode["startCareerDate"]
+		availableDay:pNode["availableDay"]
+		useDay:1
+		role:"individual"
+		markID:req.cookies["ID"]
+		fID:0
+
+
+
+
+	else 
+
+		form=LSys.getFormByFID(req.query.fID)
+		state= form.getState()
+
+
+		if state['deputy'] is false
+
+			res.render 'formEditor',
+			imgScript: '../javascripts/ImageUtility.js'
+			mainScript: '../javascripts/MainUtility.js'
+			form: form.getImageUri()
+			style: "../stylesheets/editForm.css"
+			role:"deputy"
+			markID:req.cookies["ID"]
+			fID:form.getFID()
+		else if state['boss'] is false	
+
+			res.render 'formEditor',
+			imgScript: '../javascripts/ImageUtility.js'
+			mainScript: '../javascripts/MainUtility.js'
+			form: form.getImageUri()
+			style: "../stylesheets/editForm.css"
+			role:"boss"
+			markID:req.cookies["ID"]
+			fID:form.getFID()
+
+		else 
+			#personnel office
+			res.render 'formEditor',
+			imgScript: '../javascripts/ImageUtility.js'
+			mainScript: '../javascripts/MainUtility.js'
+			form: form.getImageUri()
+			style: "../stylesheets/editForm.css"
+			role:"personnel"
+			markID:req.cookies["ID"]
+			fID:form.getFID()
+
 
 	
+	
+
 
 #upload
 router.post '/uploadForm',(req,res)->
 
+	name = idTable[req.cookies["ID"]]
+	fName=req.body.name.replace " ",""
+	console.log "uploadform---------------------\n\n\n"
+	console.log name
+
+	# new 填表人
+	if name ==fName
+
+		dt=genDate()
+		#create data object LeaveForm("許木坤","20170101","楊文宏")
+		newForm=new LeaveForm(fName,genDate(),req.body.deputyName)
+		newForm.setImageDir("dataPool/forms")
+		fID=newForm.getFID()
+		urlToImage newForm.getImagePath(),req.body.image
+		LSys.addNewForm(newForm)
+		LSys.submitFormByID(name,fID)
+		#LSys.showArchitecture()
+		res.redirect("/mainPage")
+
+	else
+		form=LSys.getFormByFID(req.body.fID)
+		
+		console.log form
+		if form isnt null
+			urlToImage form.getImagePath(),req.body.image
+			LSys.submitFormByID(name,form.getFID())
+			LSys.showArchitecture()
+			res.redirect("/mainPage")
+
+
+
+
 	
-	name=req.body.name.replace " ",""
-	dt=genDate()
-	urlToImage './dataPool/forms/'+dt+"-"+name+'.png',req.body.image
-
-	#create data object LeaveForm("許木坤","20170101","楊文宏")
-	newForm=new LeaveForm(name,genDate(),req.body.deputyName)
 	
-	console.log newForm
-	LSys.addNewForm(newForm)
 
+	
 
-	 
-
-
-router.get '/editForm', (req, res, next) ->
-  res.render 'editForm',
-    script: '../javascripts/ImageUtility.js'
-    form: "../images/form.png"
-    style: "../stylesheets/editForm.css"
-    name:"許木坤"
-    role:"individual"
-    FID:"123"
-    markID: 1
-    startCareerDay:"2017/01/01"
-    availableDay:200
-    useDay:199
-
-    
 
 
 

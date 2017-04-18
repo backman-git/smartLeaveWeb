@@ -9,69 +9,82 @@ html
 		link(rel="stylesheet" type="text/css" href="#{style}")
 		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.css")
 		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.gradient.min.css")
-
-	body
 		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/components/datepicker.min.js")
-		script(src="#{script}")
+		script(src="#{mainScript}",type="text/javascript")
+		script(src="#{imgScript}" ,type="text/javascript")
+ 
+	body
 
 		
 		div(class="loader")
-
+		input(type="hidden" id="fID" value="#{fID}")
+		input(type="hidden" id="role" value="#{role}")
 		nav(class="uk-navbar")
 			div(class="uk-navbar-flip")
 				ul(class="uk-navbar-nav")
 					li
 						a(href="./") 返回主頁
-					li
-						a(href="#") 登出
+					
+					
 			
 
 		img(src="#{form}",id="Form" )
-
 		div(class="editor")
 			canvas(width="850dp" height="1150dp" id="Canvas" class="canvas")
 			
-			p(id="name",class="name",size="50px") 
-				font(size ="20px") #{name}
+			if name
+				p(id="name",class="name",size="50px") 
+					font(size ="20px") #{name}
+			if startCareerDay
+				p(id="careerDay",class="careerDay",size="50px")
+					font(size ="20px") #{startCareerDay} 
+			if availableDay
+				p(id="availableDay",class="availableDay",size="50px")
+					font(size ="20px") #{availableDay}
+			if useDay
+				p(id="useDay",class="useDay",size="50px")
+					font(size ="20px") #{useDay} 
 
-			p(id="careerDay",class="careerDay",size="50px")
-				font(size ="20px") #{startCareerDay} 
-
-			p(id="availableDay",class="availableDay",size="50px")
-				font(size ="20px") #{availableDay} 
-
-			div(id="leaveDate" class="leaveDate")
-				form(class ="uk-form") 從
-					input(id="startDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
-				br
-				br
-				form(class ="uk-form") 到
-					input(id="finishDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
-
-
-			p(id="useDay",class="useDay",size="50px")
-				font(size ="20px") #{useDay} 
 
 			case role
 
 				when "individual"
+					//leave day
+					div(id="leaveDate" class="leaveDate")
+						form(class ="uk-form") 從
+							input(id="startDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+						br
+						br
+						form(class ="uk-form") 到
+							input(id="finishDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+					
+
+					// mark	
 					button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
+					// deputy
 					div(class="deputyInput")
 						p 請指定代理人
-						input(type="text" id="deputyName" )
+						input(type="text" id="deputyName" value="楊文宏")
+					
 				
 				when "deputy"
 					button(id="DeputyMarkButton" class="deputyMarkButton" value="#{markID}") 蓋章
 
-				when "supervisor"
+				when "boss"
 					button(id="supervisorButton" class="supervisorMarkButton" value="#{markID}") 蓋章
+				
+				when "personnel"
+					textarea(class="textArea1",rows="10",cols="20", maxlength="500" id="officeMsg") 
+					textarea(class="textArea2",rows="8",cols="20" , maxlength="500" id="etc") 
+					
 			
-
-			textarea(class="textArea",rows="10",cols="20") 休假好棒棒
 
 
 			button(id="submit" class="submitButton") 上傳
 
 
+
+
+			

@@ -6,38 +6,103 @@ html
 	title
 	head
 		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css")
+		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js")
+		script(src="#{mainScript}")
 		
 
 	body
-		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js")
 		
+		case role
 
-		nav(class="uk-navbar")
-			div(class="uk-navbar-flip")
-				ul(class="uk-navbar-nav")
-					li
-						a(href="/mainPage/editForm") 新增假單
-					li
-						a(href="#") 登出
+			when "personnel"
+				nav(class="uk-navbar")
+					div(class="uk-navbar-flip")
+						ul(class="uk-navbar-nav")
+							li
+								a(id="logOut",href="/login") 登出
 
-		
-		table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
-			thead
-				tr
-					th ID
-					th 日期
-					th 職務代理人
 
-			tbody
 
+			when "individual"
+				nav(class="uk-navbar")
+					div(class="uk-navbar-flip")
+						ul(class="uk-navbar-nav")
+							li
+								a(href="/mainPage/editForm?fID=new") 新增假單
+							li
+								a(id="logOut",href="/login") 登出
+
+		P #{name}
+
+		case role
+
+			when "personnel"
+				p 假單庫
+				if (processList!={})
+					table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
+						thead
+							tr
+								th ID
+								th 日期
+								th 職務代理人
+								th 簽核
+						tbody
+					
+							for l in processList
+								tr
+									th= l["fileID"]
+									th= l["date"]
+									th= l["roles"]["deputy"] 
+									if l["state"]["personnel"] == true
+										th
+											a(class="uk-button" href="./"+l['imageUri']) 檢視 
+									else
+										th
+											a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
+				p (目前未有資料)
+
+			when "individual"
+				p 我的假單
 				if historyList
+					table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
+						thead
+							tr
+							th ID
+							th 日期
+							th 職務代理人
 
-					for l in historyList
-						tr
-							th= l["fileID"]
-							th= l["date"]
-							th= l["roles"]["deputy"] 
+						tbody
+							for l in historyList
+								tr
+									th= l["fileID"]
+									th= l["date"]
+									th= l["roles"]["deputy"] 
+			
+					
 				else
-					p 沒有資料
+					p (目前未有資料)
+
+				p 待審假單
+				if (processList!={})
+					table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
+						thead
+							tr
+								th ID
+								th 日期
+								th 職務代理人
+								th 簽核
+
+
+						tbody
+					
+							for l in processList
+								tr
+									th= l["fileID"]
+									th= l["date"]
+									th= l["roles"]["deputy"] 
+									th
+										a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
+			
+				p (目前未有資料)
 

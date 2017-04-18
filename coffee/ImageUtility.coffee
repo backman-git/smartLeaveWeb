@@ -12,7 +12,6 @@ $(document).ready ->
 
 
 
-
 	ImageFactory =(ctx)->
 		this.ctx=ctx
 		this.drawImage = (image_arg,image_x,image_y)->
@@ -26,12 +25,13 @@ $(document).ready ->
 		return
 
 
+
 	
 
 
 
 
-
+	
 	showMark = (event ) ->
 		$(this).text("")
 		
@@ -40,10 +40,9 @@ $(document).ready ->
 		str3=str1.concat event.data.p1
 		str3=str3.concat str2
 		$(this).css("background-image",str3  )
-		$(this).css("background-image",str3  )
 		$(this).css("height","50px"  )
-		$(this).css("width","120px"  )
-		$(this).css("left","350px"  )
+		$(this).css("width","150px"  )
+		$(this).css("left","280px"  )
 		return
 
 
@@ -59,6 +58,8 @@ $(document).ready ->
 		#bias
 		y+=40
 
+		#BX bad bypass
+		ctx.fillText($("#"+ID).val(), x , y )
 		ctx.fillText($("#"+ID).text(), x , y )
 		
 		return
@@ -86,22 +87,62 @@ $(document).ready ->
 
 
 
+	checkForm= ()->
+
+		alertMsg=""
+
+		switch $("#role").val()
+
+			when "individual"
+
+				#check day not yet
+
+				if $('#PersonalMarkButton').text() !=""
+					alertMsg+="please stamp the mark!\n"
+
+				#should check if the person exist!
+				if $('#deputyName').val()==""
+					alertMsg+="deputy name is empty!\n"
+
+
+			when "deputy"
+				if $('#DeputyMarkButton').text() !=""
+					alertMsg+="please stamp the mark!\n"
+
+			when "boss"
+				if $('#supervisorButton').text() !=""
+					alertMsg+="please stamp the mark!\n"
+
+
+		if alertMsg==""
+			saveFormToImg()
+		else
+			alertMsg+="please fill empty fields!"
+			alert(alertMsg)
+
+
+
 
 	saveFormToImg = ()->
 
 		
-
-		printTextToForm("name")
-		printTextToForm("careerDay")
+		if $('#name').length
+			printTextToForm("name")
 		
+		if $('#careerDay').length
+			printTextToForm("careerDay")
+		
+		if $('#startDay').length
+			printDayToForm("startDay")
 
-		printDayToForm("startDay")
+		if $('#finishDay').length
+			printDayToForm("finishDay")
 
+		if $('#availableDay').length
+			printTextToForm("availableDay")
 
-		printDayToForm("finishDay")
-		printTextToForm("availableDay")
-		printTextToForm("useDay")
-
+		if $('#useDay').length
+			printTextToForm("useDay")
 
 		if $("#PersonalMarkButton").length
 			printImgtoForm("PersonalMarkButton")
@@ -112,41 +153,50 @@ $(document).ready ->
 		if $("#supervisorButton").length
 			printImgtoForm("supervisorButton")
 
+		if $("#officeMsg").length
+			printTextToForm("officeMsg")
+			console.log "office"
+		if $("#etc").length
+			printTextToForm('etc')
+			console.log "etc"
+
+		setTimeout(saveImgtoServer,30)
+
 
 		
-
-
 		
 		
-		#bug should fix
-		saveImgtoServer "/mainPage/upLoadForm", $("#Canvas")[0].toDataURL()
 		return 
 
+	
+	saveImgtoServer =()->
 
-	saveImgtoServer =(url,data)->
+		url = "/mainPage/upLoadForm"
+		data = $("#Canvas")[0].toDataURL()
 
 		$.post url,
-				{image:data,name:$("#name").text(),deputyName:$("#deputyName").val()},
-				(data,status)->
-					 
-					 return
+				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val()},
+				(data,status)-> 
+					window.location.href = "../mainPage"
+					return
 		return
 
 
 		return
+	
 
 
 
+	$("#submit").click(checkForm)
 
-	$("#submit").click(saveFormToImg)
+	pButtonID=$('#PersonalMarkButton').val()
+	$('#PersonalMarkButton').click({p1:"../dataPool/mark/"+pButtonID+".png"},showMark)
 
-	nameStr=$("#name").text()
-	nameStr=nameStr.replace " ",""
-	$('#PersonalMarkButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
+	dButtonID=$('#DeputyMarkButton').val()
+	$('#DeputyMarkButton').click({p1:"../dataPool/mark/"+dButtonID+".png"},showMark)
 
-	$('#DeputyMarkButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
-
-	$('#supervisorButton').click({p1:"../images/"+nameStr+".jpg"},showMark)
+	sButtonID=$('#supervisorButton').val()
+	$('#supervisorButton').click({p1:"../dataPool/mark/"+sButtonID+".png"},showMark)
 
 
 	return

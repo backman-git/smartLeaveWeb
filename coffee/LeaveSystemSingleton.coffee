@@ -1,3 +1,8 @@
+Node =require "./Node"
+People =require "./People"
+LeaveForm = require "./LeaveForm"
+
+
 
 
 
@@ -6,13 +11,16 @@ class LeaveSystem
 
 	constructor:(@mainTreeRoot)->
 		@formsList={}
-
 		#build hashTable of nodes
 		@treeHT=genHT_of_Tree(@mainTreeRoot)
 
 
 	getSecurityLevelByName:(name)->
 		return @treeHT[name].value.level
+
+	getPeopleNodeByName:(name)->
+		return clone @treeHT[name].value
+
 
 	getSecurityLevelByFID:(FID)->
 		name=this.getNameByFID(FID)
@@ -88,7 +96,10 @@ class LeaveSystem
 	getRole:(name,FID)->
 		role=""
 
-		if this.getNameByFID(FID) == name
+		if this.getSecurityLevelByName(name) ==0
+			role="personnel"
+
+		else if this.getNameByFID(FID) == name
 			role="individual"		
 
 		else if this.getSecurityLevelByName(name) == this.getSecurityLevelByFID(FID)
@@ -110,34 +121,40 @@ class LeaveSystem
 
 
 	pushToFQ:(form)->
-
+		#final queue
 		@treeHT["假單庫"].value.addFormToWaitHQueue(form)		
 
 
-		console.log form.name+" is Finish."
 
-	submitFormById:(name,FID)->
+
+
+	submitFormByID:(name,FID)->
+
+
 
 		role=this.getRole(name,FID)
-
-
 		p=@treeHT[name].value
 		form=p.retriveFormByFID(FID)
 		form.setState(role,true)
-			
 
-		if this.checkFormFinish(form) == true
+
+		if role is "personnel"
+			p.addFormToWaitHQueue(form)
+
+		else if role is "boss" 
 			this.pushToFQ(form)
 
 		else if role is "deputy"
 			pParent=@treeHT[name].getParent().value
-
 			pParent.addFormToWaitHQueue(form)
 
 		else if role is "individual"
 			deputy =@treeHT[form.getRoleName("deputy") ]
 			deputy=deputy.value
 			deputy.addFormToWaitHQueue(form)
+
+
+
 
 	getPersonFormListByName:(name)->
 		return clone @formsList[name]
@@ -203,4 +220,67 @@ clone = (obj) ->
 
   return newInstance
 
-module.exports =LeaveSystem
+
+
+
+
+top= new Node( new People("假單庫",0,"假單庫","2017/6/6",0),null)
+a1= new Node( new People("劉采鑫",1,"大隊長","2017/1/1",0),top)
+a2= new Node( new People("沈俊興",1,"大隊長","2017/1/1",0),top)
+a3= new Node( new People("陳岳謄",1,"大隊長","2017/1/1",0),top)
+
+b1= new Node( new People("林子博",2,"分隊長","2017/1/1",0),a1)
+b2= new Node( new People("陳勝佑",2,"分隊長","2017/1/1",0),a2)
+b3= new Node( new People("何建樺",2,"分隊長","2017/1/1",0),a3)
+
+
+c1= new Node( new People("許木坤",3,"隊員","2017/1/1",200),b1)
+c2= new Node( new People("楊文宏",3,"隊員","2017/1/1",0),b1)
+c3= new Node( new People("王邦晟",3,"隊員","2017/1/1",0),b3)
+
+
+
+
+
+
+class LeaveSystemSingleton
+
+	instance=null
+	top=null
+	@build:()->
+
+		top= new Node( new People("假單庫",0,"假單庫","2017/6/6",0),null)
+		a1= new Node( new People("劉采鑫",1,"大隊長","2017/1/1",0),top)
+		a2= new Node( new People("沈俊興",1,"大隊長","2017/1/1",0),top)
+		a3= new Node( new People("陳岳謄",1,"大隊長","2017/1/1",0),top)
+		b1= new Node( new People("林子博",2,"分隊長","2017/1/1",0),a1)
+		b2= new Node( new People("陳勝佑",2,"分隊長","2017/1/1",0),a2)
+		b3= new Node( new People("何建樺",2,"分隊長","2017/1/1",0),a3)
+		c1= new Node( new People("許木坤",3,"隊員","2017/1/1",200),b1)
+		c2= new Node( new People("楊文宏",3,"隊員","2017/1/1",0),b1)
+		c3= new Node( new People("王邦晟",3,"隊員","2017/1/1",0),b3)
+		return top
+
+	@get:()->
+		top=@build()
+
+		if  instance != null
+			return instance
+		else
+			instance = new LeaveSystem(top)
+			return instance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports =LeaveSystemSingleton
