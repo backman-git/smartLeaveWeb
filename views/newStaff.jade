@@ -1,0 +1,42 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js") 
+		
+	body
+
+
+
+		
+	
+		form(class="uk-form" action="./newStaff" method="POST" enctype="multipart/form-data" )
+			fieldset( data-uk-margin)
+				div(class="uk-form-row")
+					p 姓名
+					input(type="text" name="name" placeholder="全名")
+				div(class="uk-form-row")
+					select(name="title") 
+						option(value="分隊長") 分隊長
+						option(value="小隊長") 小隊長
+						option(value="隊員") 隊員
+					
+
+
+				div(class="uk-form-row")
+					p 上級長官
+					input(type="text" name="boss" placeholder="上級長官")
+				div(class="uk-form-row")
+					p 入值日
+					input(type="text" name="startCareerDate" placeholder="入值日")
+				div(class="uk-form-row")
+					p 可請假日
+					input(type="text" name="availableDay" placeholder="可請假日")
+				div(class="uk-form-row")
+					p 密碼
+					input(type="password" name="pwd" placeholder="密碼")
+				div(class="uk-form-row")
+					p 印章
+					input(type="file" name="mark" placeholder="密碼")
+				div(class="uk-form-row")
+					input(type="submit" value="註冊") 

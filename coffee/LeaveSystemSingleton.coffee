@@ -3,8 +3,7 @@ People =require "./People"
 LeaveForm = require "./LeaveForm"
 
 
-
-
+debug = require('debug') 'smartLeave:LSys'
 
 
 class LeaveSystem
@@ -15,11 +14,25 @@ class LeaveSystem
 		@treeHT=genHT_of_Tree(@mainTreeRoot)
 
 
+	addPeople:(p)->
+
+		@treeHT[p.name]= new Node p
+
+		return 
+
+	getPeopleByName:(name)->
+
+		if name of @treeHT
+			t = @treeHT[name]
+			return t.value
+		else
+			return null
+
 	getSecurityLevelByName:(name)->
 		return @treeHT[name].value.level
 
 	getPeopleNodeByName:(name)->
-		return clone @treeHT[name].value
+		return  @treeHT[name].value
 
 
 	getSecurityLevelByFID:(FID)->
@@ -34,11 +47,11 @@ class LeaveSystem
 
 
 	showArchitecture:()->
-		console.log "------------------------------------------\n"
+		debug "------------------------------------------\n"
 		queue=[]
 
 		if @mainTreeRoot is null
-			console.log "Null"
+			debug "Null"
 
 
 		else
@@ -52,7 +65,7 @@ class LeaveSystem
 
 				if currentLevel < a.value.level
 					currentLevel=a.value.level
-					console.log "\n"
+					debug "\n"
 
 			
 				process.stdout.write(a.value.name+": ")
@@ -64,7 +77,7 @@ class LeaveSystem
 				for c in a.getChild()
 					queue.push(c)
 
-		console.log "\n\n------------------------------------------\n"
+		debug "\n\n------------------------------------------\n"
 
 
 
@@ -178,7 +191,7 @@ genHT_of_Tree = (root)->
 	queue=[]
 
 	if root is null
-		console.log "Null"
+		debug "Null"
 
 
 	else
@@ -222,22 +235,8 @@ clone = (obj) ->
 
 
 
-
-
-top= new Node( new People("假單庫",0,"假單庫","2017/6/6",0),null)
-a1= new Node( new People("劉采鑫",1,"大隊長","2017/1/1",0),top)
-a2= new Node( new People("沈俊興",1,"大隊長","2017/1/1",0),top)
-a3= new Node( new People("陳岳謄",1,"大隊長","2017/1/1",0),top)
-
-b1= new Node( new People("林子博",2,"分隊長","2017/1/1",0),a1)
-b2= new Node( new People("陳勝佑",2,"分隊長","2017/1/1",0),a2)
-b3= new Node( new People("何建樺",2,"分隊長","2017/1/1",0),a3)
-
-
-c1= new Node( new People("許木坤",3,"隊員","2017/1/1",200),b1)
-c2= new Node( new People("楊文宏",3,"隊員","2017/1/1",0),b1)
-c3= new Node( new People("王邦晟",3,"隊員","2017/1/1",0),b3)
-
+emptyFunction =()->
+	return
 
 
 
@@ -245,33 +244,48 @@ c3= new Node( new People("王邦晟",3,"隊員","2017/1/1",0),b3)
 
 class LeaveSystemSingleton
 
-	instance=null
-	top=null
-	@build:()->
+	@instance=null
 
-		top= new Node( new People("假單庫",0,"假單庫","2017/6/6",0),null)
-		a1= new Node( new People("劉采鑫",1,"大隊長","2017/1/1",0),top)
-		a2= new Node( new People("沈俊興",1,"大隊長","2017/1/1",0),top)
-		a3= new Node( new People("陳岳謄",1,"大隊長","2017/1/1",0),top)
-		b1= new Node( new People("林子博",2,"分隊長","2017/1/1",0),a1)
-		b2= new Node( new People("陳勝佑",2,"分隊長","2017/1/1",0),a2)
-		b3= new Node( new People("何建樺",2,"分隊長","2017/1/1",0),a3)
-		c1= new Node( new People("許木坤",3,"隊員","2017/1/1",200),b1)
-		c2= new Node( new People("楊文宏",3,"隊員","2017/1/1",0),b1)
-		c3= new Node( new People("王邦晟",3,"隊員","2017/1/1",0),b3)
-		return top
+	@treeNodes={}
+	@readFlag=false
 
+
+	
 	@get:()->
-		top=@build()
+		
 
-		if  instance != null
-			return instance
+		if @readFlag == false
+			return null
+
+
+		else if  @instance != null 
+			return @instance
+		
+		
 		else
-			instance = new LeaveSystem(top)
-			return instance
+			debug "LSys is ready to go"
+			@instance = new LeaveSystem(@treeNodes['假單庫'])
+			return @instance
 
 
 
+
+	@buildTree:(pList)->
+
+		for p in pList
+				@treeNodes[p.name]=new Node p
+
+
+		for key,n of @treeNodes
+			if n.value.boss !=""
+				n.setParent(@treeNodes[n.value.boss])
+		return @treeNodes
+	
+
+
+	@setReady:(f)->
+		@readFlag=f
+		return
 
 
 

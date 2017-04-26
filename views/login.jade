@@ -1,13 +1,33 @@
 doctype html
 html
-	head login
-	body
+	head 
+		link(rel="stylesheet" href="#{style}")
+		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
+		script(src="#{script}")
+		
+	body(bgcolor="#000000")
 
-		form(action="./login" method="POST")
-			|帳號
-			input(type="text" name="username")
-			br
-			br
-			|密碼
-			input(type="password" name="pwd")
-			input(type="submit" value="Submit")
+
+		//video(playsinline autoplay muted loop id="bgvid" class="bgvid")
+		//	source(src="./video/bg.mp4" type="video/mp4")
+
+
+		div(class="cont")
+			div(class ="demo")
+				div(class ="login")
+					img(class="login__symbol" src="/images/fufun.svg")
+					form(class ="login__form" action="./login " method="post")
+						div(class="login__row")
+
+							svg(class="login__icon name svg-icon" viewBox="0 0 20 20")
+								path(d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8")
+							input(type="text" class="login__input name" placeholder="帳號" name="username")
+						div(class="login__row")
+							svg(class="login__icon pass svg-icon" viewBox="0 0 20 20")
+								path(d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0")
+							input(type="password" class="login__input pass" placeholder="密碼" name="pwd")
+						input(type="submit" class="login__submit" value="登入") 
+						p(class="login__signup") 沒有帳號? &nbsp;
+							a(href="./newStaff") 註冊 
+						br
+						p(class="login__signup") Design by Backman

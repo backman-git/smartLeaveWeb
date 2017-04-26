@@ -4,7 +4,9 @@ fs = require 'fs'
 Node =require "../coffee/Node"
 People =require "../coffee/People"
 LeaveForm = require "../coffee/LeaveForm"
-LSysSingleton = require '../coffee/leaveSystemSingleton'
+LeaveSystemSingleton = require '../coffee/LeaveSystemSingleton'
+sessionManager = require '../coffee/SessionManager'
+debug = require('debug') 'smartLeave:mainPage'
 router = express.Router()
 
 
@@ -12,31 +14,30 @@ router = express.Router()
 
 
 
-# only for test should use in dataBase
-users = {'人事室': {username: '假單庫',password: '123',id:'0'}, '許木坤': {username: '許木坤',password: '1',id: '101'},'林子博': {username: '林子博',password: '5',id: '202'},'楊文宏': {username: '楊文宏',password: '2',id: '303'}}
-idTable={'101':"許木坤",'202':"林子博",'303':"楊文宏",'0':"假單庫"}
 
 
 
 
 
-#----------------------------------------------------
-LSys = LSysSingleton.get()
+#-------------------------unhandle null---------------------------
+
 
 
 router.get '/', (req, res, next) ->
-
+	LSys = LeaveSystemSingleton.get()
+	debug "LSys:"+LSys
 	ID=req.cookies["ID"]
-	#BX should change
-	name = idTable[ID]
-
-	if ID  == users['人事室']['id']
+	name = sessionManager.getSessionName(ID)
+	if ID  == sessionManager.getSessionID("假單庫")
 		#if want change control page
+
+		debug "admin login "
+
 		pNode=LSys.getPeopleNodeByName(name)
 		pFormList=LSys.getPersonFormListByName(pNode["name"])
 		pWList=pNode.getWaitHQueue()
 		
-		console.log pWList
+		debug pWList
 
 		res.render 'mainPage',
 		mainScript: '../javascripts/MainUtility.js'
@@ -47,11 +48,15 @@ router.get '/', (req, res, next) ->
 		role:"personnel"
 
 	else
+
+		debug "general login"
+
 		pNode=LSys.getPeopleNodeByName(name)
+		debug "pNode:"+pNode
 		pFormList=LSys.getPersonFormListByName(pNode["name"])
 		pWList=pNode.getWaitHQueue()
 		
-		console.log pWList
+		debug pWList
 
 		res.render 'mainPage',
 		mainScript: '../javascripts/MainUtility.js'
@@ -68,15 +73,16 @@ router.get '/', (req, res, next) ->
 
 
 router.get '/editForm' , (req,res,next)->
-	#BX
-	name = idTable[req.cookies["ID"]]
+	LSys = LeaveSystemSingleton.get()
+	ID=req.cookies["ID"]
+	name = sessionManager.getSessionName(ID)
 	pNode=LSys.getPeopleNodeByName(name)
 
 
 
 	if req.query.fID =="new"
 
-				
+		debug req.cookies["ID"]
 		res.render 'formEditor',
 		imgScript: '../javascripts/ImageUtility.js'
 		mainScript: '../javascripts/MainUtility.js'
@@ -138,11 +144,14 @@ router.get '/editForm' , (req,res,next)->
 
 #upload
 router.post '/uploadForm',(req,res)->
+	LSys = LeaveSystemSingleton.get()
 
-	name = idTable[req.cookies["ID"]]
+
+	ID=req.cookies["ID"]
+	name = sessionManager.getSessionName(ID)
 	fName=req.body.name.replace " ",""
-	console.log "uploadform---------------------\n\n\n"
-	console.log name
+	debug "uploadform---------------------\n\n\n"
+	debug name
 
 	# new 填表人
 	if name ==fName
@@ -155,13 +164,13 @@ router.post '/uploadForm',(req,res)->
 		urlToImage newForm.getImagePath(),req.body.image
 		LSys.addNewForm(newForm)
 		LSys.submitFormByID(name,fID)
-		#LSys.showArchitecture()
+		LSys.showArchitecture()
 		res.redirect("/mainPage")
 
 	else
 		form=LSys.getFormByFID(req.body.fID)
 		
-		console.log form
+		debug form
 		if form isnt null
 			urlToImage form.getImagePath(),req.body.image
 			LSys.submitFormByID(name,form.getFID())
@@ -190,7 +199,7 @@ urlToImage = (path,url) ->
 
 	data=url.replace /^data:image\/\w+;base64,/, ""
 
-	#console.log url
+	#debug url
 	buf = new Buffer data, 'base64'
 	fs.writeFile path,buf
 	return 

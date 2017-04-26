@@ -1,23 +1,40 @@
 express = require 'express'
 router = express.Router()
-
 #------passport--
 Passport = require('passport')
 LocalStrategy = require('passport-local').Strategy  
 session = require('express-session')  
-#RedisStore = require('connect-redis')(session)
+
+LeaveSystemSingleton = require '../coffee/LeaveSystemSingleton'
+sessionManager = require '../coffee/SessionManager'
 
 
-# only for test should use in dataBase
-users = {'人事室': {username: '假單庫',password: '123',id:'0'}, '許木坤': {username: '許木坤',password: '1',id: '101'},'林子博': {username: '林子博',password: '5',id: '202'},'楊文宏': {username: '楊文宏',password: '2',id: '303'}}
-idTable={'101':"許木坤",'202':"林子博",'303':"楊文宏",'0':"假單庫"}
+db= require('../coffee/db')
+People = require '../coffee/People'
+
+debug = require('debug') 'smartLeave:index'
+
+
+
+
+multer = require 'multer'
+
+
+fs= require 'fs'
+
+
+
 
 
 localStrategy = new LocalStrategy({usernameField: 'username',passwordField: 'pwd'},(username,password,done)->
-		user =users[username]
+		
+		LSys = LeaveSystemSingleton.get()
+
+		user = LSys.getPeopleByName(username)
+		debug user
 		if user is null 
 			return done null,false,{message: 'Invalid user'}
-		if user.password isnt password
+		if user.pwd isnt password
 			return done null,false,{message: 'Invalid password'}
 
 		done null,user
@@ -37,14 +54,84 @@ router.use Passport.initialize()
 # GET home page.
 router.get '/login', (req, res, next) ->
 	
+	LSys = LeaveSystemSingleton.get()
+	LSys.showArchitecture()
 
-	res.render "login"
+
+	res.render "login",
+	style:"./stylesheets/login.css"
+	script:"./javascripts/login.js"
+
 
 
 module.exports = router
 
 
-router.post '/login',Passport.authenticate( 'local', {session:false} ),(req,res)->
+router.post '/login',Passport.authenticate( 'local', {session:false,failureFlash: false} ),(req,res)->
 
-	res.cookie "ID", req.user.id
+	debug req.user.name,req.user["_id"]
+	sessionManager.setSession(req.user.name,req.user["_id"])
+	res.cookie "ID", req.user["_id"]
+
 	res.redirect("../mainPage")
+
+
+router.get '/newStaff', (req, res, next) ->
+
+	res.render "newStaff",
+	style:"./stylesheets/login.css"
+
+
+
+
+imgMarkPath='./public/dataPool/mark/'
+destinationFn=(req,file,cb)->
+	cb(null,imgMarkPath)
+
+
+
+storage = multer.diskStorage({destination:destinationFn})
+
+
+
+uploadMark = multer({storage:storage})
+
+
+router.post '/newStaff',uploadMark.single("mark"),(req,res)->
+	LSys = LeaveSystemSingleton.get()
+	
+	levelTlb={"分隊長":1,"小隊長":1,"隊員":3}
+
+
+	debug req.file
+
+	newPeople = new People({name: req.body.name,
+	boss: req.body.boss,
+	level: levelTlb[req.body.title],
+	title: req.body.title,
+	startCareerDate: req.body.startCareerDate,
+	availableDay: req.body.availableDay,
+	useDay: 0,
+	pwd: req.body.pwd,
+	waitHQueue:{}
+
+
+							 })
+
+	debug newPeople['_id']
+	uploadFileName= req.file['filename']
+
+	fs.rename(""+imgMarkPath+uploadFileName,""+imgMarkPath+newPeople['_id']+".png")
+
+
+	LSys.addPeople(newPeople)
+
+
+
+	newPeople.save((err)->
+
+		if err
+			debug err
+
+		)
+	res.send "新增完成"

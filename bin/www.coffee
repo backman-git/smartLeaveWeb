@@ -5,41 +5,82 @@ app = require '../app'
 debug = require('debug') 'smartLeave:server'
 http = require 'http'
 
+
+
+#------database--
+db = require '../coffee/db'
+
+
+#------LSys--
+LeaveSystemSingleton = require '../coffee/LeaveSystemSingleton'
+People = require '../coffee/People'
+
+
+
+db.on('error', console.error.bind(console, 'connection error:'))
+
+db.once('open',()->
+	console.log "Leave System connected to database."
+
+
+	People.find({},(err,pList)->
+		
+		LeaveSystemSingleton.buildTree(pList)
+		LeaveSystemSingleton.setReady(true)
+		LSys = LeaveSystemSingleton.get()
+		
+	) 
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
 # Normalize a port into a number, string, or false.
 normalizePort = (val) ->
-  port = parseInt val, 10
+	port = parseInt val, 10
 
-  # named pipe
-  if isNaN port
-    val
-  # port number
-  else if port >= 0
-    port
-  false
+	# named pipe
+	if isNaN port
+		val
+	# port number
+	else if port >= 0
+		port
+	false
 
 # Event listener for HTTP server "error" event.
 onError = (error) ->
-  if error.syscall isnt 'listen'
-    throw error
+	if error.syscall isnt 'listen'
+		throw error
 
-  bind = if typeof port is 'string' then "Pipe #{port}" else "Port #{port}"
+	bind = if typeof port is 'string' then "Pipe #{port}" else "Port #{port}"
 
-  # handle specific listen errors with friendly messages
-  switch error.code
-    when 'EACCES'
-      console.error "#{bind} requires elevated privileges"
-      process.exit 1
-    when 'EADDRINUSE'
-      console.error "#{bind} is already in use"
-      process.exit 1
-    else
-      throw error
+	# handle specific listen errors with friendly messages
+	switch error.code
+		when 'EACCES'
+			console.error "#{bind} requires elevated privileges"
+			process.exit 1
+		when 'EADDRINUSE'
+			console.error "#{bind} is already in use"
+			process.exit 1
+		else
+			throw error
 
 # Event listener for HTTP server "listening" event.
 onListening = ->
-  addr = server.address()
-  bind = if typeof addr is 'string' then "pipe #{addr}" else "port #{addr.port}"
-  debug "Listening on #{bind}"
+	addr = server.address()
+	bind = if typeof addr is 'string' then "pipe #{addr}" else "port #{addr.port}"
+	debug "Listening on #{bind}"
 
 
 # Get port from environment and store in Express.

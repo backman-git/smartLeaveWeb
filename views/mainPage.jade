@@ -5,9 +5,9 @@ doctype html
 html
 	title
 	head
-		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css")
+		link(rel="stylesheet" href="./uikit-2.27.2/css/uikit.css")
 		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" )
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js")
+		script(src="./uikit-2.27.2/js/uikit.min.js")
 		script(src="#{mainScript}")
 		
 
@@ -33,7 +33,7 @@ html
 							li
 								a(id="logOut",href="/login") 登出
 
-		P #{name}
+		P(class="uk-text-primary uk-text-center uk-text-large uk-text-bold ") #{name}
 
 		case role
 
@@ -60,42 +60,46 @@ html
 									else
 										th
 											a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
-				p (目前未有資料)
+				else							
+					p (目前未有資料)
 
 			when "individual"
-				p 我的假單
-				if historyList
-					table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
-						thead
-							tr
+				p(class="uk-badge uk-badge-notification  uk-badge-success") 我的假單
+				
+				table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
+					thead
+						tr
 							th ID
 							th 日期
 							th 職務代理人
 
-						tbody
+					tbody
+						if (historyList)
 							for l in historyList
 								tr
 									th= l["fileID"]
 									th= l["date"]
 									th= l["roles"]["deputy"] 
-			
-					
-				else
-					p (目前未有資料)
-
-				p 待審假單
-				if (processList!={})
-					table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
-						thead
+						else
 							tr
-								th ID
-								th 日期
-								th 職務代理人
-								th 簽核
+								th 目前未有資料
+				
+				br
+				br
+				br
+				p(class="uk-badge uk-badge-notification  uk-badge-warning") 待審假單
+				
+				table(class="uk-table uk-table-hover uk-table-striped uk-table-condensed")
+					thead
+						tr
+							th ID
+							th 日期
+							th 職務代理人
+							th 簽核
 
-
-						tbody
 					
+					tbody
+						if (processList)
 							for l in processList
 								tr
 									th= l["fileID"]
@@ -103,6 +107,6 @@ html
 									th= l["roles"]["deputy"] 
 									th
 										a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
-			
-				p (目前未有資料)
-
+						else
+							tr
+								th 目前未有資料

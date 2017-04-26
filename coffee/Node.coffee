@@ -1,11 +1,9 @@
 class Node
 
-	constructor:(@value,@parent)->
+	constructor:(@value)->
 		@childList=[]
 
-		if @parent != null
-			@parent.setChild(this)
-			
+		
 
 			
 	setChild:(child)->
@@ -14,10 +12,11 @@ class Node
 	getChild:()->
 		return @childList
 
-	setParent:(newParent)->
-		#bug not remove child
-		@parent=newParent
-		#newParent.setChild(this)
+	setParent:(@parent)->
+
+		if @parent != null
+			@parent.setChild(this)
+			
 
 	getParent:()->
 		return @parent
