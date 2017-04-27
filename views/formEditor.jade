@@ -34,6 +34,10 @@ html
 		div(class="editor")
 			canvas(width="850dp" height="1150dp" id="Canvas" class="canvas")
 			
+			if title
+				p(id="title",class="title",size="50px") 
+					font(size ="20px") #{title}
+
 			if name
 				p(id="name",class="name",size="50px") 
 					font(size ="20px") #{name}
@@ -54,14 +58,15 @@ html
 					//leave day
 					div(id="leaveDate" class="leaveDate")
 						form(class ="uk-form") 從
-							input(id="startDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+							input(id="startDay" type="" data-uk-datepicker="{format:'    YYYY/MM/DD'}" value="    YYYY/MM/DD ") 
 						br
 						br
 						form(class ="uk-form") 到
-							input(id="finishDay" type="" data-uk-datepicker="{format:'    YYYY年MM月DD日'}" value="    YYYY年MM月DD日 ") 
+							input(id="finishDay" type="" data-uk-datepicker="{format:'    YYYY/MM/DD'}" value="    YYYY/MM/DD ") 
 					
 
 					// mark	
+
 					button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
 					// deputy
 					div(class="deputyInput")
@@ -72,8 +77,19 @@ html
 				when "deputy"
 					button(id="DeputyMarkButton" class="deputyMarkButton" value="#{markID}") 蓋章
 
-				when "boss"
-					button(id="supervisorButton" class="supervisorMarkButton" value="#{markID}") 蓋章
+				when "firstBoss"
+					if fType== "short"
+						button(id="supervisorButton" class="supervisorMarkButtonTypeShort" value="#{markID}") 蓋章
+
+					else
+						button(id="supervisorButton" class="supervisorMarkButtonTypeLong" value="#{markID}") 蓋章
+
+				when "secondBoss"
+					button(id="secondSupervisorButton" class="secondSupervisorMarkButtonTypeLong" value="#{markID}") 蓋章
+
+
+
+				
 				
 				when "personnel"
 					textarea(class="textArea1",rows="10",cols="20", maxlength="500" id="officeMsg") 

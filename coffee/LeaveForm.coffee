@@ -2,12 +2,13 @@
 
 class LeaveForm
 
-	constructor:(@name,@date,deputy)->
+	constructor:(@name,@date,deputy,@type)->
 		@fileID=@date+"-"+@name
 		@imagePath=""
+		
 
-
-		@state={"individual":false,"deputy":false,"boss":false,"personnel":false}
+		@finish=false
+		@state={"individual":false,"deputy":false,"firstBoss":false,"secondBoss":false,"personnel":false}
 
 		@roles={"individual":"","deputy":"","boss":""}
 		this.setRoleName("deputy",deputy)
@@ -23,7 +24,19 @@ class LeaveForm
 	getImageUri:()->
 		return @imageUri
 
+	isFinish:()->
+		if @type=="short" and @state['individual'] and @state['deputy'] and @state['firstBoss'] and @state['secondBoss']
+			return true
 
+
+		else if @type=="long" and @state['individual'] and @state['deputy'] and @state['firstBoss']  and @state['secondBoss'] and @state['personnel']
+			return true
+		else
+			return false
+
+
+	getType:()->
+		return @type
 
 
 	getOwner:()->
@@ -36,6 +49,9 @@ class LeaveForm
 
 	setState:(stateID,value) ->
 		@state[stateID]=value
+		@finish=this.isFinish()
+
+
 
 	getState:()->
 		return @state

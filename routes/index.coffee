@@ -100,7 +100,7 @@ uploadMark = multer({storage:storage})
 router.post '/newStaff',uploadMark.single("mark"),(req,res)->
 	LSys = LeaveSystemSingleton.get()
 	
-	levelTlb={"分隊長":1,"小隊長":1,"隊員":3}
+	levelTlb={"大隊長":1,"分隊長":2,"小隊長":2,"隊員":3}
 
 
 	debug req.file

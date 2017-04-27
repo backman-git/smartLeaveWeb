@@ -89,13 +89,21 @@ $(document).ready ->
 
 	checkForm= ()->
 
+		fDay=-1
+		sDay=-1
+
 		alertMsg=""
 
 		switch $("#role").val()
 
 			when "individual"
 
-				#check day not yet
+				#check day 
+				fDay= parseInt($('#finishDay').val().split("/")[2],10)
+				sDay= parseInt($('#startDay').val().split('/')[2],10)
+				if isNaN(fDay) or isNaN(sDay)
+					alertMsg+="日期未填\n" 
+
 
 				if $('#PersonalMarkButton').text() !=""
 					alertMsg+="please stamp the mark!\n"
@@ -109,25 +117,31 @@ $(document).ready ->
 				if $('#DeputyMarkButton').text() !=""
 					alertMsg+="please stamp the mark!\n"
 
-			when "boss"
+			when "firstBoss"
 				if $('#supervisorButton').text() !=""
+					alertMsg+="please stamp the mark!\n"
+			when "secondBoss"
+				if $('#secondSupervisorButton').text() !=""
 					alertMsg+="please stamp the mark!\n"
 
 
 		if alertMsg==""
-			saveFormToImg()
+			saveFormToImg(sDay,fDay)
 		else
 			alertMsg+="please fill empty fields!"
 			alert(alertMsg)
 
 
+	delay =(ms,func) -> setTimeout func,ms
 
-
-	saveFormToImg = ()->
+	saveFormToImg = (sDay,fDay)->
 
 		
 		if $('#name').length
 			printTextToForm("name")
+			
+		if $('#title').length
+			printTextToForm("title")
 		
 		if $('#careerDay').length
 			printTextToForm("careerDay")
@@ -153,6 +167,9 @@ $(document).ready ->
 		if $("#supervisorButton").length
 			printImgtoForm("supervisorButton")
 
+		if $("#secondSupervisorButton").length
+			printImgtoForm("secondSupervisorButton")
+
 		if $("#officeMsg").length
 			printTextToForm("officeMsg")
 			console.log "office"
@@ -160,8 +177,7 @@ $(document).ready ->
 			printTextToForm('etc')
 			console.log "etc"
 
-		setTimeout(saveImgtoServer,30)
-
+		delay 30, ->saveImgtoServer sDay,fDay
 
 		
 		
@@ -169,13 +185,23 @@ $(document).ready ->
 		return 
 
 	
-	saveImgtoServer =()->
+	saveImgtoServer =(sDay,fDay)->
 
 		url = "/mainPage/upLoadForm"
 		data = $("#Canvas")[0].toDataURL()
 
+	
+		fType=""
+
+		if fDay == -1 and sDay ==-1
+			fType=null
+		else if fDay-sDay <3
+			fType="short"
+		else
+			fType="long"
+
 		$.post url,
-				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val()},
+				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val(),fType:fType  },
 				(data,status)-> 
 					window.location.href = "../mainPage"
 					return
@@ -197,6 +223,9 @@ $(document).ready ->
 
 	sButtonID=$('#supervisorButton').val()
 	$('#supervisorButton').click({p1:"../dataPool/mark/"+sButtonID+".png"},showMark)
+
+	ssButtonID=$('#secondSupervisorButton').val()
+	$('#secondSupervisorButton').click({p1:"../dataPool/mark/"+ssButtonID+".png"},showMark)
 
 
 	return

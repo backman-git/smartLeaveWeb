@@ -89,6 +89,7 @@ router.get '/editForm' , (req,res,next)->
 		form: "../images/form.png"
 		style: "../stylesheets/editForm.css"
 		name: pNode["name"]
+		title:pNode["title"]
 		startCareerDay:pNode["startCareerDate"]
 		availableDay:pNode["availableDay"]
 		useDay:1
@@ -115,16 +116,49 @@ router.get '/editForm' , (req,res,next)->
 			role:"deputy"
 			markID:req.cookies["ID"]
 			fID:form.getFID()
-		else if state['boss'] is false	
+		
+
+		#two type of form
+		#type short
+		else if form.getType() == 'short' and state['firstBoss'] is false	
 
 			res.render 'formEditor',
 			imgScript: '../javascripts/ImageUtility.js'
 			mainScript: '../javascripts/MainUtility.js'
 			form: form.getImageUri()
 			style: "../stylesheets/editForm.css"
-			role:"boss"
+			role:"firstBoss"
 			markID:req.cookies["ID"]
 			fID:form.getFID()
+			fType:form.getType()
+
+		#type long
+		else if form.getType() == "long" and state['firstBoss'] is false
+			#firstBoss
+			res.render 'formEditor',
+			imgScript: '../javascripts/ImageUtility.js'
+			mainScript: '../javascripts/MainUtility.js'
+			form: form.getImageUri()
+			style: "../stylesheets/editForm.css"
+			role:"firstBoss"
+			markID:req.cookies["ID"]
+			fID:form.getFID()
+			fType:form.getType()
+
+		else if form.getType() == "long" and state['firstBoss'] is true and state['secondBoss'] is false 
+			#secondBoss
+			res.render 'formEditor',
+			imgScript: '../javascripts/ImageUtility.js'
+			mainScript: '../javascripts/MainUtility.js'
+			form: form.getImageUri()
+			style: "../stylesheets/editForm.css"
+			role:"secondBoss"
+			markID:req.cookies["ID"]
+			fID:form.getFID()
+			fType:form.getType()
+
+
+
 
 		else 
 			#personnel office
@@ -144,21 +178,28 @@ router.get '/editForm' , (req,res,next)->
 
 #upload
 router.post '/uploadForm',(req,res)->
+
+
+
+
+
 	LSys = LeaveSystemSingleton.get()
 
 
 	ID=req.cookies["ID"]
 	name = sessionManager.getSessionName(ID)
 	fName=req.body.name.replace " ",""
-	debug "uploadform---------------------\n\n\n"
-	debug name
+	debug "upload By:"+name
 
 	# new 填表人
 	if name ==fName
 
 		dt=genDate()
 		#create data object LeaveForm("許木坤","20170101","楊文宏")
-		newForm=new LeaveForm(fName,genDate(),req.body.deputyName)
+
+
+
+		newForm=new LeaveForm(fName,genDate(),req.body.deputyName,req.body.fType)
 		newForm.setImageDir("dataPool/forms")
 		fID=newForm.getFID()
 		urlToImage newForm.getImagePath(),req.body.image
@@ -170,7 +211,6 @@ router.post '/uploadForm',(req,res)->
 	else
 		form=LSys.getFormByFID(req.body.fID)
 		
-		debug form
 		if form isnt null
 			urlToImage form.getImagePath(),req.body.image
 			LSys.submitFormByID(name,form.getFID())

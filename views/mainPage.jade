@@ -54,12 +54,12 @@ html
 									th= l["fileID"]
 									th= l["date"]
 									th= l["roles"]["deputy"] 
-									if l["state"]["personnel"] == true
+									if l["finish"] == true
 										th
-											a(class="uk-button" href="./"+l['imageUri']) 檢視 
+											a(class="uk-button-success uk-button-large" href="./"+l['imageUri']) 檢視 
 									else
 										th
-											a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
+											a(class="uk-button-danger uk-button-large" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
 				else							
 					p (目前未有資料)
 
@@ -80,6 +80,12 @@ html
 									th= l["fileID"]
 									th= l["date"]
 									th= l["roles"]["deputy"] 
+									if l["finish"] == true
+										th
+											a(class="uk-button-success uk-button-large" href="./"+l['imageUri']) 檢視 
+									else
+										th
+											a(class="uk-button-danger uk-button-large" href="./"+l['imageUri']) 檢視 
 						else
 							tr
 								th 目前未有資料
@@ -105,8 +111,12 @@ html
 									th= l["fileID"]
 									th= l["date"]
 									th= l["roles"]["deputy"] 
-									th
-										a(class="uk-button" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
+									if l["finish"] == true
+										th
+											a(class="uk-button-success uk-button-large" href="./"+l['imageUri']) 檢視 
+									else
+										th
+											a(class="uk-button-danger uk-button-large" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
 						else
 							tr
 								th 目前未有資料

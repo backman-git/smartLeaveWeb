@@ -116,10 +116,11 @@ class LeaveSystem
 			role="individual"		
 
 		else if this.getSecurityLevelByName(name) == this.getSecurityLevelByFID(FID)
-
 			role="deputy"
-		else if this.getSecurityLevelByName(name) < this.getSecurityLevelByFID(FID)
-			role="boss"
+		else if this.getSecurityLevelByName(name)+1 == this.getSecurityLevelByFID(FID)
+			role="firstBoss"
+		else if this.getSecurityLevelByName(name)+2 == this.getSecurityLevelByFID(FID)
+			role="secondBoss"
 		else
 			role="Error"
 		return role
@@ -133,7 +134,7 @@ class LeaveSystem
 
 
 
-	pushToFQ:(form)->
+	pushToReviewQ:(form)->
 		#final queue
 		@treeHT["假單庫"].value.addFormToWaitHQueue(form)		
 
@@ -153,9 +154,23 @@ class LeaveSystem
 
 		if role is "personnel"
 			p.addFormToWaitHQueue(form)
+			
+			#just for backup!!
+			this.pushToReviewQ(form)
 
-		else if role is "boss" 
-			this.pushToFQ(form)
+		else if role is "firstBoss" 
+			pParent=@treeHT[name].getParent().value
+			pParent.addFormToWaitHQueue(form)
+
+		else if role is "secondBoss" and form.getType() =="short"
+			p.addFormToWaitHQueue(form)
+
+			#just for backup!!
+			this.pushToReviewQ(form)
+
+		else if role is "secondBoss" and form.getType() =="long"
+			pParent=@treeHT[name].getParent().value
+			pParent.addFormToWaitHQueue(form)
 
 		else if role is "deputy"
 			pParent=@treeHT[name].getParent().value
