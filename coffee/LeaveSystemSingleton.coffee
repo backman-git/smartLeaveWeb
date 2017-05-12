@@ -107,22 +107,27 @@ class LeaveSystem
 
 
 	getRole:(name,FID)->
+
+		form=this.getFormByFID(FID)
+		fState=form.getState()
+
 		role=""
 
 		if this.getSecurityLevelByName(name) ==0
 			role="personnel"
 
-		else if this.getNameByFID(FID) == name
+		else if this.getNameByFID(FID) == name and fState['individual'] is false
 			role="individual"		
 
-		else if this.getSecurityLevelByName(name) == this.getSecurityLevelByFID(FID)
+		else if this.getSecurityLevelByName(name) >= this.getSecurityLevelByFID(FID) and fState['deputy'] is false 
 			role="deputy"
-		else if this.getSecurityLevelByName(name)+1 == this.getSecurityLevelByFID(FID)
+		else if this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID) and fState['firstBoss'] is false
 			role="firstBoss"
-		else if this.getSecurityLevelByName(name)+2 == this.getSecurityLevelByFID(FID)
+		else if this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID)  and fState['secondBoss'] is false
 			role="secondBoss"
 		else
 			role="Error"
+
 		return role
 
 
@@ -136,8 +141,14 @@ class LeaveSystem
 
 	pushToReviewQ:(form)->
 		#final queue
-		@treeHT["假單庫"].value.addFormToWaitHQueue(form)		
+		@treeHT["假單庫"].value.addFormToWaitHQueue(form)
+		pNode=@treeHT["假單庫"].value
 
+		People.update({_id:pNode["_id"]},{waitHQueue:pNode["waitHQueue"]},(err,raw)->
+			if err 
+				debug err
+
+		 )
 
 
 
@@ -145,25 +156,65 @@ class LeaveSystem
 	submitFormByID:(name,FID)->
 
 
-
 		role=this.getRole(name,FID)
+		debug role
 		p=@treeHT[name].value
 		form=p.retriveFormByFID(FID)
 		form.setState(role,true)
 
+		
 
 		if role is "personnel"
 			p.addFormToWaitHQueue(form)
+
+
+			People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->
+				if err 
+					debug err
+
+			)
+
+
 			
 			#just for backup!!
 			this.pushToReviewQ(form)
 
 		else if role is "firstBoss" 
-			pParent=@treeHT[name].getParent().value
-			pParent.addFormToWaitHQueue(form)
+
+			
+
+			if p.level ==1
+				p.addFormToWaitHQueue(form)
+
+				People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->
+					if err 
+						debug err
+
+				)
+
+
+			else
+				pParent=@treeHT[name].getParent().value
+				pParent.addFormToWaitHQueue(form)
+
+				People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
+					if err 
+						debug err
+
+				)
+
+
+
 
 		else if role is "secondBoss" and form.getType() =="short"
 			p.addFormToWaitHQueue(form)
+
+			People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->
+				if err 
+					debug err
+
+			)
+
 
 			#just for backup!!
 			this.pushToReviewQ(form)
@@ -171,15 +222,31 @@ class LeaveSystem
 		else if role is "secondBoss" and form.getType() =="long"
 			pParent=@treeHT[name].getParent().value
 			pParent.addFormToWaitHQueue(form)
+			People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
+				if err 
+					debug err
+
+			)
+
 
 		else if role is "deputy"
 			pParent=@treeHT[name].getParent().value
 			pParent.addFormToWaitHQueue(form)
+			People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
+				if err 
+					debug err
+
+			)
 
 		else if role is "individual"
 			deputy =@treeHT[form.getRoleName("deputy") ]
 			deputy=deputy.value
 			deputy.addFormToWaitHQueue(form)
+			People.update({_id:deputy["_id"]},{waitHQueue:deputy["waitHQueue"]},(err,raw)->
+				if err 
+					debug err
+
+			)
 
 
 
@@ -227,26 +294,26 @@ genHT_of_Tree = (root)->
 
 
 clone = (obj) ->
-  if not obj? or typeof obj isnt 'object'
-    return obj
+	if not obj? or typeof obj isnt 'object'
+		return obj
 
-  if obj instanceof Date
-    return new Date(obj.getTime()) 
+	if obj instanceof Date
+		return new Date(obj.getTime()) 
 
-  if obj instanceof RegExp
-    flags = ''
-    flags += 'g' if obj.global?
-    flags += 'i' if obj.ignoreCase?
-    flags += 'm' if obj.multiline?
-    flags += 'y' if obj.sticky?
-    return new RegExp(obj.source, flags) 
+	if obj instanceof RegExp
+		flags = ''
+		flags += 'g' if obj.global?
+		flags += 'i' if obj.ignoreCase?
+		flags += 'm' if obj.multiline?
+		flags += 'y' if obj.sticky?
+		return new RegExp(obj.source, flags) 
 
-  newInstance = new obj.constructor()
+	newInstance = new obj.constructor()
 
-  for key of obj
-    newInstance[key] = clone obj[key]
+	for key of obj
+		newInstance[key] = clone obj[key]
 
-  return newInstance
+	return newInstance
 
 
 

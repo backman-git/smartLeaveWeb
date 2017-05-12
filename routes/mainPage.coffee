@@ -203,7 +203,11 @@ router.post '/uploadForm',(req,res)->
 		newForm.setImageDir("dataPool/forms")
 		fID=newForm.getFID()
 		urlToImage newForm.getImagePath(),req.body.image
+
+
+
 		LSys.addNewForm(newForm)
+
 		LSys.submitFormByID(name,fID)
 		LSys.showArchitecture()
 		res.redirect("/mainPage")

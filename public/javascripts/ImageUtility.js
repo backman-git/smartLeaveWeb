@@ -42,7 +42,7 @@
       ctx = $("#Canvas")[0].getContext('2d');
       ctx.font = "20px Arial";
       p = $("#" + ID).offset();
-      ctx.fillText($("#" + ID).val(), p.left - 40, p.top);
+      ctx.fillText($("#" + ID).val(), p.left + 20, p.top);
     };
     printImgtoForm = function(ID) {
       var bgImg, ctx, imageFactory;

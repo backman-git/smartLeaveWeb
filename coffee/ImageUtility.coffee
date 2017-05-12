@@ -70,7 +70,7 @@ $(document).ready ->
 		ctx.font = "20px Arial"
 		p=$("#"+ID).offset()		
 		#bias
-		ctx.fillText($("#"+ID).val(), p.left-40 , p.top )
+		ctx.fillText($("#"+ID).val(), p.left+30 , p.top )
 		
 		return
 

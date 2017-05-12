@@ -100,17 +100,19 @@
     };
 
     LeaveSystem.prototype.getRole = function(name, FID) {
-      var role;
+      var fState, form, role;
+      form = getFormByFID(FID);
+      fState = form.getState();
       role = "";
       if (this.getSecurityLevelByName(name) === 0) {
         role = "personnel";
       } else if (this.getNameByFID(FID) === name) {
         role = "individual";
-      } else if (this.getSecurityLevelByName(name) === this.getSecurityLevelByFID(FID)) {
+      } else if (this.getSecurityLevelByName(name) >= this.getSecurityLevelByFID(FID) && fState['deputy'] === false) {
         role = "deputy";
-      } else if (this.getSecurityLevelByName(name) === this.getSecurityLevelByFID(FID) - 1) {
+      } else if (this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID) && fState['firstBoss'] === false) {
         role = "firstBoss";
-      } else if (this.getSecurityLevelByName(name) === this.getSecurityLevelByFID(FID) - 2) {
+      } else if (this.getSecurityLevelByName(name) < this.getSecurityLevelByFID(FID) && fState['secondBoss'] === false) {
         role = "secondBoss";
       } else {
         role = "Error";
@@ -130,7 +132,7 @@
       return true;
     };
 
-    LeaveSystem.prototype.pushToFQ = function(form) {
+    LeaveSystem.prototype.pushToReviewQ = function(form) {
       return this.treeHT["假單庫"].value.addFormToWaitHQueue(form);
     };
 
@@ -140,10 +142,19 @@
       p = this.treeHT[name].value;
       form = p.retriveFormByFID(FID);
       form.setState(role, true);
+      debug(role);
       if (role === "personnel") {
-        return p.addFormToWaitHQueue(form);
-      } else if (role === "boss") {
-        return this.pushToFQ(form);
+        p.addFormToWaitHQueue(form);
+        return this.pushToReviewQ(form);
+      } else if (role === "firstBoss") {
+        pParent = this.treeHT[name].getParent().value;
+        return pParent.addFormToWaitHQueue(form);
+      } else if (role === "secondBoss" && form.getType() === "short") {
+        p.addFormToWaitHQueue(form);
+        return this.pushToReviewQ(form);
+      } else if (role === "secondBoss" && form.getType() === "long") {
+        pParent = this.treeHT[name].getParent().value;
+        return pParent.addFormToWaitHQueue(form);
       } else if (role === "deputy") {
         pParent = this.treeHT[name].getParent().value;
         return pParent.addFormToWaitHQueue(form);
