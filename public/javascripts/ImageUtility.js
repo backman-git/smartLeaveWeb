@@ -23,14 +23,14 @@
       str3 = str1.concat(event.data.p1);
       str3 = str3.concat(str2);
       $(this).css("background-image", str3);
-      $(this).css("height", "50px");
-      $(this).css("width", "150px");
-      $(this).css("left", "280px");
+      $(this).css("height", "80px");
+      $(this).css("width", "200px");
+      $(this).css("left", "300px");
     };
     printTextToForm = function(ID) {
       var ctx, x, y;
       ctx = $("#Canvas")[0].getContext('2d');
-      ctx.font = "45px Arial";
+      ctx.font = "45px DFKai-sb";
       x = parseInt($("#" + ID).css("left"));
       y = parseInt($("#" + ID).css("top"));
       y += 40;
@@ -42,7 +42,7 @@
       ctx = $("#Canvas")[0].getContext('2d');
       ctx.font = "20px Arial";
       p = $("#" + ID).offset();
-      ctx.fillText($("#" + ID).val(), p.left + 20, p.top);
+      ctx.fillText($("#" + ID).val(), p.left + 30, p.top);
     };
     printImgtoForm = function(ID) {
       var bgImg, ctx, imageFactory;
@@ -97,6 +97,9 @@
       return setTimeout(func, ms);
     };
     saveFormToImg = function(sDay, fDay) {
+      if ($('#team').length) {
+        printTextToForm("team");
+      }
       if ($('#name').length) {
         printTextToForm("name");
       }

@@ -12,6 +12,7 @@ mongoose = require('mongoose')
 PeopleSchema = mongoose.Schema({
 
 	name: String,
+	team: String,
 	boss: String,
 	level: Number,
 	title: String,

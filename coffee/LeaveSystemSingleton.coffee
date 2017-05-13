@@ -142,9 +142,21 @@ class LeaveSystem
 	pushToReviewQ:(form)->
 		#final queue
 		@treeHT["假單庫"].value.addFormToWaitHQueue(form)
-		pNode=@treeHT["假單庫"].value
+		pAdmin=@treeHT["假單庫"].value
 
-		People.update({_id:pNode["_id"]},{waitHQueue:pNode["waitHQueue"]},(err,raw)->
+		pOwner=@treeHT[form.name].value
+
+		pOwner.setUseDay(pOwner.useDay+1)
+
+
+
+		People.update({name:pOwner.name},{useDay:pOwner.useDay},(err,raw)->
+			if err
+				debug err
+
+		)
+
+		People.update({_id:pAdmin["_id"]},{waitHQueue:pAdmin["waitHQueue"]},(err,raw)->
 			if err 
 				debug err
 

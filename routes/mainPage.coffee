@@ -88,11 +88,12 @@ router.get '/editForm' , (req,res,next)->
 		mainScript: '../javascripts/MainUtility.js'
 		form: "../images/form.png"
 		style: "../stylesheets/editForm.css"
+		team: pNode["team"]
 		name: pNode["name"]
 		title:pNode["title"]
 		startCareerDay:pNode["startCareerDate"]
-		availableDay:pNode["availableDay"]
-		useDay:1
+		availableDay:""+pNode["availableDay"]
+		useDay:""+(pNode["useDay"]+1)
 		role:"individual"
 		markID:req.cookies["ID"]
 		fID:0

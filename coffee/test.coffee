@@ -12,28 +12,29 @@ People =require "./People"
 #levelTlb={"大隊長":1,"副大隊長":2,"分隊長":3,"小隊長":4,"隊員":5}
 
 
-p1= new People({name:"假單庫",boss:"",level:0,title:"",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p2= new People({name:"人事室",boss:"假單庫",level:0,title:"",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p1= new People({name:"假單庫",team:"SYSTEM",boss:"",level:0,title:"",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p2= new People({name:"人事室",team:"SYSTEM",boss:"假單庫",level:0,title:"",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+
+p1.save()
+p2.save()
+
+
+
+p3= new People({name:"林子博",team:"",boss:"高仲毅",level:3,title:"分隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p4= new People({name:"林訓",team:"",boss:"林子博",level:4,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p5= new People({name:"許木坤",team:"",boss:"林子博",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p6= new People({name:"林茂昌",team:"",boss:"林子博",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
 
 
 
 
 
-p3= new People({name:"林子博",boss:"高仲毅",level:3,title:"分隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p4= new People({name:"林訓",boss:"林子博",level:4,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p5= new People({name:"許木坤",boss:"林子博",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p6= new People({name:"林茂昌",boss:"林子博",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
 
-
-
-
-
-
-p7= new People({name:"高仲毅",boss:"人事室",level:1,title:"大隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p8= new People({name:"張哲彬",boss:"高仲毅",level:2,title:"副大隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p9= new People({name:"黃國勛",boss:"高仲毅",level:5,title:"小隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p10= new People({name:"王詩強",boss:"高仲毅",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
-p11= new People({name:"高碧霙",boss:"高仲毅",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p7= new People({name:"高仲毅",team:"",boss:"人事室",level:1,title:"大隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p8= new People({name:"張哲彬",team:"",boss:"高仲毅",level:2,title:"副大隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p9= new People({name:"黃國勛",team:"",boss:"高仲毅",level:5,title:"小隊長",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p10= new People({name:"王詩強"team:"",,boss:"高仲毅",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
+p11= new People({name:"高碧霙",team:"",boss:"高仲毅",level:5,title:"隊員",startCareerDate:"201701/01",availableDay:25,useDay:3,pwd:"123"})
 
 
 

@@ -34,6 +34,11 @@ html
 		div(class="editor")
 			canvas(width="850dp" height="1150dp" id="Canvas" class="canvas")
 			
+			if team
+				p(id="team",class="team",size="50px") 
+					font(size ="20px") #{team}
+
+
 			if title
 				p(id="title",class="title",size="50px") 
 					font(size ="20px") #{title}
@@ -104,8 +109,8 @@ html
 			
 
 
-			button(id="submit" class="submitButton") 上傳
-
+			button(id="submit" class="sucessBtn") 上傳
+			button(id="cancel" class="cancelBtn") 取消
 
 
 

@@ -348,22 +348,28 @@
 	"buffers":
 	[
 		{
-			"file": "coffee/test.coffee",
+			"file": "public/stylesheets/editForm.less",
 			"settings":
 			{
-				"buffer_size": 6852,
+				"buffer_size": 2040,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "Node =require \"./Node\"\nPeople =require \"./People\"\nLeaveForm = require \"./LeaveForm\"\n\n\ndebug = require('debug') 'smartLeave:LSys'\n\n\nclass LeaveSystem\n\n\tconstructor:(@mainTreeRoot)->\n\t\t@formsList={}\n\t\t#build hashTable of nodes\n\t\t@treeHT=genHT_of_Tree(@mainTreeRoot)\n\n\n\taddPeople:(p)->\n\n\t\t@treeHT[p.name]= new Node p\n\n\t\treturn \n\n\tgetPeopleByName:(name)->\n\n\t\tif name of @treeHT\n\t\t\tt = @treeHT[name]\n\t\t\treturn t.value\n\t\telse\n\t\t\treturn null\n\n\tgetSecurityLevelByName:(name)->\n\t\treturn @treeHT[name].value.level\n\n\tgetPeopleNodeByName:(name)->\n\t\treturn  @treeHT[name].value\n\n\n\tgetSecurityLevelByFID:(FID)->\n\t\tname=this.getNameByFID(FID)\n\n\t\treturn @treeHT[name].value.level\n\n\tgetNameByFID:(FID)->\n\t\tFID=FID.split(\"-\",2)\n\t\treturn FID[1]\n\n\n\n\tshowArchitecture:()->\n\t\tdebug \"------------------------------------------\\n\"\n\t\tqueue=[]\n\n\t\tif @mainTreeRoot is null\n\t\t\tdebug \"Null\"\n\n\n\t\telse\n\t\t\tqueue.push(@mainTreeRoot)\n\t\t\tcurrentLevel=@mainTreeRoot.value.level\n\n\n\t\t\twhile queue.length !=0\n\t\t\t\ta=queue.shift()\n\n\n\t\t\t\tif currentLevel < a.value.level\n\t\t\t\t\tcurrentLevel=a.value.level\n\t\t\t\t\tdebug \"\\n\"\n\n\t\t\t\n\t\t\t\tprocess.stdout.write(a.value.name+\": \")\n\n\t\t\t\tfor k,v of a.value.getWaitHQueue()\n\t\t\t\t\tprocess.stdout.write(\"(\"+k+\",\"+v+\") \")\n\n\n\t\t\t\tfor c in a.getChild()\n\t\t\t\t\tqueue.push(c)\n\n\t\tdebug \"\\n\\n------------------------------------------\\n\"\n\n\n\n\n\n\n\taddFormToFormsList:(form)->\n\n\t\tif form.name of @formsList\n\t\t\t@formsList[form.name][form.fileID]=form\n\t\telse\n\t\t\t@formsList[form.name]={}\n\t\t\t@formsList[form.name][form.fileID]=form\n\n\n\taddNewForm:(form)->\n\t\t@treeHT[form.name].value.addFormToWaitHQueue(form)\n\t\tthis.addFormToFormsList(form)\n\n\n\t\n\n\tgetFormsList:()->\n\t\treturn clone(@formsList)\n\n\n\n\n\tgetRole:(name,FID)->\n\n\t\tform=this.getFormByFID(FID)\n\t\tfState=form.getState()\n\n\t\trole=\"\"\n\n\t\tif this.getSecurityLevelByName(name) ==0\n\t\t\trole=\"personnel\"\n\n\t\telse if this.getNameByFID(FID) == name and fState['individual'] is false\n\t\t\trole=\"individual\"\t\t\n\n\t\telse if this.getSecurityLevelByName(name) >= this.getSecurityLevelByFID(FID) and fState['deputy'] is false \n\t\t\trole=\"deputy\"\n\t\telse if this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID) and fState['firstBoss'] is false\n\t\t\trole=\"firstBoss\"\n\t\telse if this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID)  and fState['secondBoss'] is false\n\t\t\trole=\"secondBoss\"\n\t\telse\n\t\t\trole=\"Error\"\n\n\t\treturn role\n\n\n\tcheckFormFinish:(form)->\n\t\tfor k,v of form.getState()\n\t\t\tif v == false\n\t\t\t\treturn false\n\t\treturn true\n\n\n\n\tpushToReviewQ:(form)->\n\t\t#final queue\n\t\t@treeHT[\"假單庫\"].value.addFormToWaitHQueue(form)\n\t\tpNode=@treeHT[\"假單庫\"].value\n\n\t\tPeople.update({_id:pNode[\"_id\"]},{waitHQueue:pNode[\"waitHQueue\"]},(err,raw)->\n\t\t\tif err \n\t\t\t\tdebug err\n\n\t\t )\n\n\n\n\n\tsubmitFormByID:(name,FID)->\n\n\n\t\trole=this.getRole(name,FID)\n\t\tdebug role\n\t\tp=@treeHT[name].value\n\t\tform=p.retriveFormByFID(FID)\n\t\tform.setState(role,true)\n\n\t\t\n\n\t\tif role is \"personnel\"\n\t\t\tp.addFormToWaitHQueue(form)\n\n\n\t\t\tPeople.update({_id:p[\"_id\"]},{waitHQueue:p[\"waitHQueue\"]},(err,raw)->\n\t\t\t\tif err \n\t\t\t\t\tdebug err\n\n\t\t\t)\n\n\t\t\t#just for backup!!\n\t\t\tthis.pushToReviewQ(form)\n\n\t\telse if role is \"firstBoss\" \n\n\t\t\t\n\n\t\t\tif p.level ==1\n\t\t\t\tp.addFormToWaitHQueue(form)\n\n\t\t\t\tPeople.update({_id:p[\"_id\"]},{waitHQueue:p[\"waitHQueue\"]},(err,raw)->\n\t\t\t\t\tif err \n\t\t\t\t\t\tdebug err\n\n\t\t\t\t)\n\n\n\t\t\telse\n\t\t\t\tpParent=@treeHT[name].getParent().value\n\t\t\t\tpParent.addFormToWaitHQueue(form)\n\n\t\t\t\tPeople.update({_id:pParent[\"_id\"]},{waitHQueue:pParent[\"waitHQueue\"]},(err,raw)->\n\t\t\t\t\tif err \n\t\t\t\t\t\tdebug err\n\n\t\t\t\t)\n\n\n\n\n\t\telse if role is \"secondBoss\" and form.getType() ==\"short\"\n\t\t\tp.addFormToWaitHQueue(form)\n\n\t\t\tPeople.update({_id:p[\"_id\"]},{waitHQueue:p[\"waitHQueue\"]},(err,raw)->\n\t\t\t\tif err \n\t\t\t\t\tdebug err\n\n\t\t\t)\n\n\n\t\t\t#just for backup!!\n\t\t\tthis.pushToReviewQ(form)\n\n\t\telse if role is \"secondBoss\" and form.getType() ==\"long\"\n\t\t\tpParent=@treeHT[name].getParent().value\n\t\t\tpParent.addFormToWaitHQueue(form)\n\t\t\tPeople.update({_id:pParent[\"_id\"]},{waitHQueue:pParent[\"waitHQueue\"]},(err,raw)->\n\t\t\t\tif err \n\t\t\t\t\tdebug err\n\n\t\t\t)\n\n\n\t\telse if role is \"deputy\"\n\t\t\tpParent=@treeHT[name].getParent().value\n\t\t\tpParent.addFormToWaitHQueue(form)\n\t\t\tPeople.update({_id:pParent[\"_id\"]},{waitHQueue:pParent[\"waitHQueue\"]},(err,raw)->\n\t\t\t\tif err \n\t\t\t\t\tdebug err\n\n\t\t\t)\n\n\t\telse if role is \"individual\"\n\t\t\tdeputy =@treeHT[form.getRoleName(\"deputy\") ]\n\t\t\tdeputy=deputy.value\n\t\t\tdeputy.addFormToWaitHQueue(form)\n\t\t\tPeople.update({_id:deputy[\"_id\"]},{waitHQueue:deputy[\"waitHQueue\"]},(err,raw)->\n\t\t\t\tif err \n\t\t\t\t\tdebug err\n\n\t\t\t)\n\n\n\n\n\tgetPersonFormListByName:(name)->\n\t\treturn clone @formsList[name]\n\t\n\n\tgetFormByFID:(id)->\n\t\tname=this.getNameByFID(id)\n\t\tfList=this.getPersonFormListByName(name)\n\n\t\treturn clone fList[id]\n\n\n\t\n\n\n\n\ngenHT_of_Tree = (root)->\n\n\tHT={}\n\tqueue=[]\n\n\tif root is null\n\t\tdebug \"Null\"\n\n\n\telse\n\t\tqueue.push(root)\n\t\tcurrentLevel=root.value.level\n\n\n\t\twhile queue.length !=0\n\t\t\ta=queue.shift()\n\n\n\t\t\tHT[a.value.name]=a\n\n\t\t\tfor c in a.getChild()\n\t\t\t\tqueue.push(c)\n\n\treturn HT\n\n\nclone = (obj) ->\n\tif not obj? or typeof obj isnt 'object'\n\t\treturn obj\n\n\tif obj instanceof Date\n\t\treturn new Date(obj.getTime()) \n\n\tif obj instanceof RegExp\n\t\tflags = ''\n\t\tflags += 'g' if obj.global?\n\t\tflags += 'i' if obj.ignoreCase?\n\t\tflags += 'm' if obj.multiline?\n\t\tflags += 'y' if obj.sticky?\n\t\treturn new RegExp(obj.source, flags) \n\n\tnewInstance = new obj.constructor()\n\n\tfor key of obj\n\t\tnewInstance[key] = clone obj[key]\n\n\treturn newInstance\n\n\n\nemptyFunction =()->\n\treturn\n\n\n\n\n\nclass LeaveSystemSingleton\n\n\t@instance=null\n\n\t@treeNodes={}\n\t@readFlag=false\n\n\n\t\n\t@get:()->\n\t\t\n\n\t\tif @readFlag == false\n\t\t\treturn null\n\n\n\t\telse if  @instance != null \n\t\t\treturn @instance\n\t\t\n\t\t\n\t\telse\n\t\t\tdebug \"LSys is ready to go\"\n\t\t\t@instance = new LeaveSystem(@treeNodes['假單庫'])\n\t\t\treturn @instance\n\n\n\n\n\t@buildTree:(pList)->\n\n\t\tfor p in pList\n\t\t\t\t@treeNodes[p.name]=new Node p\n\n\n\t\tfor key,n of @treeNodes\n\t\t\tif n.value.boss !=\"\"\n\t\t\t\tn.setParent(@treeNodes[n.value.boss])\n\t\treturn @treeNodes\n\t\n\n\n\t@setReady:(f)->\n\t\t@readFlag=f\n\t\treturn\n\n\n\n\n\n\n\n\n\n\n\nmodule.exports =LeaveSystemSingleton",
-			"file": "coffee/LeaveSystemSingleton.coffee",
-			"file_size": 6411,
-			"file_write_time": 131387084573606401,
+			"file": "coffee/ImageUtility.coffee",
 			"settings":
 			{
-				"buffer_size": 6007,
+				"buffer_size": 4568,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/development/Desktop/smartLeaveWeb/genMark/genMark.py",
+			"settings":
+			{
+				"buffer_size": 617,
 				"line_ending": "Windows"
 			}
 		}
@@ -748,6 +754,7 @@
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/bin",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/stylesheets",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/uikit-2.27.2",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/uikit-2.27.2/js",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/public/uikit-2.27.2/js/components",
@@ -756,9 +763,11 @@
 	],
 	"file_history":
 	[
+		"/C/Users/development/Desktop/smartLeaveWeb/genMark/list.txt",
+		"/C/Users/development/Desktop/smartLeaveWeb/genMark/genMark.py",
+		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/test.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/LeaveSystemSingleton.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/People.coffee",
-		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/test.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/views/formEditor.jade",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/ImageUtility.coffee",
 		"/C/Users/development/Desktop/smartLeaveWeb/smartLeave/coffee/LeaveForm.coffee",
@@ -876,6 +885,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"showMark",
+			"button",
+			"  ",
 			"pushToReviewQ",
 			"addFormToWaitHQueue",
 			"getRole",
@@ -1000,10 +1012,7 @@
 			"saveImgtoServer",
 			"console",
 			"consolr",
-			"40",
-			"upLoadForm",
-			"editForm",
-			"saveFormToImg"
+			"40"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1011,6 +1020,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			" ",
 			"LeaveSystemSingleton",
 			"debug",
 			"digit4Shift",
@@ -1029,24 +1039,54 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "coffee/test.coffee",
+					"file": "public/stylesheets/editForm.less",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6852,
+						"buffer_size": 2040,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6500,
-								6500
+								311,
+								311
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "coffee/ImageUtility.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4568,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								573,
+								573
 							]
 						],
 						"settings":
@@ -1055,39 +1095,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 6387.0,
+						"translation.y": 3000.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "coffee/LeaveSystemSingleton.coffee",
+					"buffer": 2,
+					"file": "/C/Users/development/Desktop/smartLeaveWeb/genMark/genMark.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6007,
+						"buffer_size": 617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3016,
-								3016
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"syntax": "Packages/Python/Python.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 2927.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1136,7 +1176,7 @@
 	"project": "pjt.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 66.0
 	},
 	"save_all_on_build": true,
 	"select_file":

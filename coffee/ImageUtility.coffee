@@ -40,9 +40,9 @@ $(document).ready ->
 		str3=str1.concat event.data.p1
 		str3=str3.concat str2
 		$(this).css("background-image",str3  )
-		$(this).css("height","50px"  )
-		$(this).css("width","150px"  )
-		$(this).css("left","280px"  )
+		$(this).css("height","80px"  )
+		$(this).css("width","200px"  )
+		$(this).css("left","300px"  )
 		return
 
 
@@ -50,7 +50,7 @@ $(document).ready ->
 		ctx = $("#Canvas")[0].getContext('2d')
 		#name
 
-		ctx.font = "45px Arial"
+		ctx.font = "50px DFKai-sb"
 		x=parseInt ( $("#"+ID).css("left") )
 	
 		
@@ -137,6 +137,9 @@ $(document).ready ->
 	saveFormToImg = (sDay,fDay)->
 
 		
+		if $('#team').length
+			printTextToForm("team")
+
 		if $('#name').length
 			printTextToForm("name")
 			

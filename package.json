@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www.coffee"
+    "initDB":"coffee ./coffee/initDB.coffee","startDB":"mongod --dbpath ./data","start": "nodemon ./bin/www.coffee"
   },
   "dependencies": {
     "body-parser": "~1.10.2",
