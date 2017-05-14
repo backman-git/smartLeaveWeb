@@ -28,10 +28,12 @@ router.get '/', (req, res, next) ->
 	debug "LSys:"+LSys
 	ID=req.cookies["ID"]
 	name = sessionManager.getSessionName(ID)
-	if ID  == sessionManager.getSessionID("假單庫")
-		#if want change control page
 
-		debug "admin login "
+
+
+
+	if ID  == sessionManager.getSessionID("假單庫")
+
 
 		pNode=LSys.getPeopleNodeByName(name)
 		pFormList=LSys.getPersonFormListByName(pNode["name"])
