@@ -13,6 +13,8 @@ class LeaveSystem
 		#build hashTable of nodes
 		@treeHT=genHT_of_Tree(@mainTreeRoot)
 
+		
+		
 
 	addPeople:(p)->
 
@@ -86,11 +88,9 @@ class LeaveSystem
 
 	addFormToFormsList:(form)->
 
-		if form.name of @formsList
-			@formsList[form.name][form.fileID]=form
-		else
-			@formsList[form.name]={}
-			@formsList[form.name][form.fileID]=form
+		#to dataBase
+		pOwner=this.getPeopleByName(form.name)
+		pOwner.addFormToMyFormList(form)
 
 
 	addNewForm:(form)->
@@ -98,10 +98,6 @@ class LeaveSystem
 		this.addFormToFormsList(form)
 
 
-	
-
-	getFormsList:()->
-		return clone(@formsList)
 
 
 
@@ -150,7 +146,9 @@ class LeaveSystem
 
 
 
-		People.update({name:pOwner.name},{useDay:pOwner.useDay},(err,raw)->
+
+
+		People.update({name:pOwner.name},{useDay:pOwner.useDay,myFormList:pOwner.myFormList},(err,raw)->
 			if err
 				debug err
 
@@ -198,35 +196,38 @@ class LeaveSystem
 			if p.level ==1
 				p.addFormToWaitHQueue(form)
 
+				'''
 				People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->
 					if err 
 						debug err
 
 				)
-
+				'''
 
 			else
 				pParent=@treeHT[name].getParent().value
 				pParent.addFormToWaitHQueue(form)
 
+				'''
 				People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
 					if err 
 						debug err
 
 				)
-
+				'''
 
 
 
 		else if role is "secondBoss" and form.getType() =="short"
 			p.addFormToWaitHQueue(form)
 
+			'''
 			People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->
 				if err 
 					debug err
 
 			)
-
+			'''
 
 			#just for backup!!
 			this.pushToReviewQ(form)
@@ -234,43 +235,51 @@ class LeaveSystem
 		else if role is "secondBoss" and form.getType() =="long"
 			pParent=@treeHT[name].getParent().value
 			pParent.addFormToWaitHQueue(form)
+
+			'''
 			People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
 				if err 
 					debug err
 
 			)
-
+			'''
 
 		else if role is "deputy"
 			pParent=@treeHT[name].getParent().value
 			pParent.addFormToWaitHQueue(form)
+
+			'''
 			People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->
 				if err 
 					debug err
 
 			)
-
+			'''
 		else if role is "individual"
 			deputy =@treeHT[form.getRoleName("deputy") ]
 			deputy=deputy.value
 			deputy.addFormToWaitHQueue(form)
+
+			'''
 			People.update({_id:deputy["_id"]},{waitHQueue:deputy["waitHQueue"]},(err,raw)->
 				if err 
 					debug err
 
 			)
-
+			'''
 
 
 
 	getPersonFormListByName:(name)->
-		return clone @formsList[name]
+		pOwner=this.getPeopleByName(name)
+		return clone pOwner.getMyFormList()
 	
 
 	getFormByFID:(id)->
 		name=this.getNameByFID(id)
 		fList=this.getPersonFormListByName(name)
-
+		debug fList
+		debug name
 		return clone fList[id]
 
 
@@ -371,7 +380,7 @@ class LeaveSystemSingleton
 
 
 		for key,n of @treeNodes
-			if n.value.boss !=""
+			if n.value.boss != "" and @treeNodes[n.value.boss]?
 				n.setParent(@treeNodes[n.value.boss])
 		return @treeNodes
 	

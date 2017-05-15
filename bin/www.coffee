@@ -24,7 +24,8 @@ db.once('open',()->
 
 
 	People.find({},(err,pList)->
-		
+		#debug ">>>"+pList
+		#debug ">>>"+pList["沈俊興"]["waitHQueue"]["20175151047-沈俊興"]
 		LeaveSystemSingleton.buildTree(pList)
 		LeaveSystemSingleton.setReady(true)
 		LSys = LeaveSystemSingleton.get()

@@ -20,8 +20,10 @@ PeopleSchema = mongoose.Schema({
 	availableDay: Number,
 	useDay: Number,
 	pwd: String,
-	waitHQueue: { type: mongoose.Schema.Types.Mixed, default: {} }},
+	waitHQueue: { type: mongoose.Schema.Types.Mixed, default: {} },
+	myFormList: { type: mongoose.Schema.Types.Mixed, default: {} }},
 	{ minimize: false }
+	
 
 
 
@@ -32,8 +34,13 @@ PeopleSchema = mongoose.Schema({
 PeopleSchema.methods.addFormToWaitHQueue=(form)->
 	@waitHQueue[form.fileID]=form
 
+PeopleSchema.methods.addFormToMyFormList=(form)->
+	@myFormList[form.fileID]=form
+
 PeopleSchema.methods.getWaitHQueue=()->
 	return @waitHQueue
+PeopleSchema.methods.getMyFormList=()->
+	return @myFormList
 
 
 PeopleSchema.methods.retriveFormByFID=(FID)->

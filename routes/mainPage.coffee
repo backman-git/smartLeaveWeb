@@ -81,7 +81,6 @@ router.get '/editForm' , (req,res,next)->
 	pNode=LSys.getPeopleNodeByName(name)
 
 
-
 	if req.query.fID =="new"
 
 		debug req.cookies["ID"]
@@ -262,4 +261,4 @@ genDate =()->
 	m=dt.getMonth() 
 	sec=dt.getSeconds() 
 
-	return year+""+month+""+day+""+h+""+m+""+sec
+	return year+"."+month+"."+day+"."+h+"."+m+"."+sec

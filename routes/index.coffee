@@ -120,9 +120,9 @@ router.post '/newStaff',uploadMark.single("mark"),(req,res)->
 
 							 })
 
-	debug newPeople['_id']
-	uploadFileName= req.file['filename']
+	debug newPeople.name
 
+	uploadFileName= req.file['filename']
 	fs.rename(""+imgMarkPath+uploadFileName,""+imgMarkPath+newPeople['_id']+".png")
 
 
