@@ -109,6 +109,7 @@ router.post '/newStaff',uploadMark.single("mark"),(req,res)->
 
 	newPeople = new People({name: req.body.name,
 	boss: req.body.boss,
+	team: req.body.team,
 	level: levelTlb[req.body.title],
 	title: req.body.title,
 	startCareerDate: req.body.startCareerDate,

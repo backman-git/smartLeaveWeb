@@ -80,6 +80,14 @@ router.get '/editForm' , (req,res,next)->
 	name = sessionManager.getSessionName(ID)
 	pNode=LSys.getPeopleNodeByName(name)
 
+	sName=pNode["name"]
+	sTeam=pNode["team"]
+
+	debug sName
+	debug sTeam
+	debug sName.replace(sTeam,"")
+
+	debug ">>>"+pNode["name"].replace(pNode["team"],"")
 
 	if req.query.fID =="new"
 
@@ -90,7 +98,7 @@ router.get '/editForm' , (req,res,next)->
 		form: "../images/form.png"
 		style: "../stylesheets/editForm.css"
 		team: pNode["team"]
-		name: pNode["name"]
+		name: pNode["name"].replace(pNode["team"],"")
 		title:pNode["title"]
 		startCareerDay:pNode["startCareerDate"]
 		availableDay:""+pNode["availableDay"]
