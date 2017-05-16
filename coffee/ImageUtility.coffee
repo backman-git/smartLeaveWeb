@@ -50,7 +50,11 @@ $(document).ready ->
 		ctx = $("#Canvas")[0].getContext('2d')
 		#name
 
-		ctx.font = "50px DFKai-sb"
+		#BX bypass should fix
+		if ID=="startH" or ID=="finishH"
+			ctx.font = "20px DFKai-sb"
+		else	
+			ctx.font = "50px DFKai-sb"
 		x=parseInt ( $("#"+ID).css("left") )
 	
 		
@@ -126,6 +130,9 @@ $(document).ready ->
 
 
 		if alertMsg==""
+			#change use day
+			$('#useDay').text(fDay-sDay+$("#useDay").val())
+
 			saveFormToImg(sDay,fDay)
 		else
 			alertMsg+="please fill empty fields!"
@@ -180,6 +187,11 @@ $(document).ready ->
 			printTextToForm('etc')
 			console.log "etc"
 
+		if $("#startH").length
+			printTextToForm('startH')
+		if $('#finishH').length
+			printTextToForm('finishH')
+
 		delay 30, ->saveImgtoServer sDay,fDay
 
 		
@@ -206,7 +218,11 @@ $(document).ready ->
 		$.post url,
 				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val(),fType:fType  },
 				(data,status)-> 
-					window.location.href = "../mainPage"
+
+					if data =="指定代理人不存在"
+						alert(data)
+					else	
+						window.location.href = "../mainPage"
 					return
 		return
 

@@ -69,12 +69,17 @@ html
 					//leave day
 					div(id="leaveDate" class="leaveDate")
 						form(class ="uk-form") 
-							input(id="startDay" type="" data-uk-datepicker="{format:'YYYY/MM/DD'}" ) 
+							input(id="startDay" type="" data-uk-datepicker="{format:'YYYY/MM/DD'}" )
+							
+							
 						br
 						br
 						form(class ="uk-form")
 							input(id="finishDay" type="" data-uk-datepicker="{format:'YYYY/MM/DD'}" ) 
-					
+							
+
+					input(id="startH" type="text" class="sHInput" value="時") 
+					input(id="finishH" type="text" class="eHInput" value="時")
 
 					// mark	
 
@@ -110,7 +115,7 @@ html
 
 
 			button(id="submit" class="sucessBtn") 上傳
-			button(id="cancel" class="cancelBtn") 取消
+			
 
 
 

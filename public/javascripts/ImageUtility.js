@@ -30,7 +30,11 @@
     printTextToForm = function(ID) {
       var ctx, x, y;
       ctx = $("#Canvas")[0].getContext('2d');
-      ctx.font = "45px DFKai-sb";
+      if (ID === "startH" || ID === "finishH") {
+        ctx.font = "30px DFKai-sb";
+      } else {
+        ctx.font = "50px DFKai-sb";
+      }
       x = parseInt($("#" + ID).css("left"));
       y = parseInt($("#" + ID).css("top"));
       y += 40;
@@ -87,6 +91,7 @@
           }
       }
       if (alertMsg === "") {
+        $('#useDay').text(fDay - sDay + $("#useDay").val());
         return saveFormToImg(sDay, fDay);
       } else {
         alertMsg += "please fill empty fields!";
@@ -141,6 +146,12 @@
         printTextToForm('etc');
         console.log("etc");
       }
+      if ($("#startH").length) {
+        printTextToForm('startH');
+      }
+      if ($('#finishH').length) {
+        printTextToForm('finishH');
+      }
       delay(30, function() {
         return saveImgtoServer(sDay, fDay);
       });
@@ -164,7 +175,11 @@
         deputyName: $("#deputyName").val(),
         fType: fType
       }, function(data, status) {
-        window.location.href = "../mainPage";
+        if (data === "指定代理人不存在") {
+          alert(data);
+        } else {
+          window.location.href = "../mainPage";
+        }
       });
       return;
     };

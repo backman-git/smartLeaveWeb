@@ -34,7 +34,11 @@ class LeaveSystem
 		return @treeHT[name].value.level
 
 	getPeopleNodeByName:(name)->
-		return  @treeHT[name].value
+
+		if name not of @treeHT
+			return null
+		else
+			return  @treeHT[name].value
 
 
 	getSecurityLevelByFID:(FID)->

@@ -80,15 +80,6 @@ router.get '/editForm' , (req,res,next)->
 	name = sessionManager.getSessionName(ID)
 	pNode=LSys.getPeopleNodeByName(name)
 
-	sName=pNode["name"]
-	sTeam=pNode["team"]
-
-	debug sName
-	debug sTeam
-	debug sName.replace(sTeam,"")
-
-	debug ">>>"+pNode["name"].replace(pNode["team"],"")
-
 	if req.query.fID =="new"
 
 		debug req.cookies["ID"]
@@ -98,11 +89,11 @@ router.get '/editForm' , (req,res,next)->
 		form: "../images/form.png"
 		style: "../stylesheets/editForm.css"
 		team: pNode["team"]
-		name: pNode["name"].replace(pNode["team"],"")
+		name: pNode["name"].replace(pNode["team"]+"-","")
 		title:pNode["title"]
 		startCareerDay:pNode["startCareerDate"]
 		availableDay:""+pNode["availableDay"]
-		useDay:""+(pNode["useDay"]+1)
+		useDay:""+(pNode["useDay"])
 		role:"individual"
 		markID:req.cookies["ID"]
 		fID:0
@@ -201,8 +192,19 @@ router.post '/uploadForm',(req,res)->
 	fName=req.body.name.replace " ",""
 	debug "upload By:"+name
 
+
+	pNode=LSys.getPeopleNodeByName(req.body.deputyName)
+	debug pNode
+	if pNode  == null	
+		res.send("指定代理人不存在")
+
+
+
+
+
+
 	# new 填表人
-	if name ==fName
+	else if name ==fName
 
 		dt=genDate()
 		#create data object LeaveForm("許木坤","20170101","楊文宏")
