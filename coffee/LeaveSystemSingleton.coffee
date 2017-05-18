@@ -47,7 +47,7 @@ class LeaveSystem
 		return @treeHT[name].value.level
 
 	getNameByFID:(FID)->
-		FID=FID.split("-",2)
+		FID=FID.split("^",2)
 		return FID[1]
 
 
@@ -98,6 +98,7 @@ class LeaveSystem
 
 
 	addNewForm:(form)->
+		debug form
 		@treeHT[form.name].value.addFormToWaitHQueue(form)
 		this.addFormToFormsList(form)
 
@@ -109,8 +110,11 @@ class LeaveSystem
 	getRole:(name,FID)->
 
 		form=this.getFormByFID(FID)
+		debug form
+
 		fState=form.getState()
 
+		
 		role=""
 
 		if this.getSecurityLevelByName(name) ==0
@@ -149,7 +153,7 @@ class LeaveSystem
 		pOwner.setUseDay(pOwner.useDay+1)
 
 
-
+		debug "final here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
 
 		People.update({name:pOwner.name},{useDay:pOwner.useDay,myFormList:pOwner.myFormList},(err,raw)->
@@ -281,9 +285,10 @@ class LeaveSystem
 
 	getFormByFID:(id)->
 		name=this.getNameByFID(id)
+		debug name
 		fList=this.getPersonFormListByName(name)
 		debug fList
-		debug name
+		
 		return clone fList[id]
 
 

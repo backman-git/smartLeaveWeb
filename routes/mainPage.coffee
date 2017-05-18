@@ -193,44 +193,44 @@ router.post '/uploadForm',(req,res)->
 	debug "upload By:"+name
 
 
-	pNode=LSys.getPeopleNodeByName(req.body.deputyName)
-	debug pNode
-	if pNode  == null	
-		res.send("指定代理人不存在")
+
+	#check if deputyName exist?
+	if req.body.deputyName?
+		pNode=LSys.getPeopleNodeByName(req.body.deputyName)
+		if pNode  == null and req.body.fID=="0"	
+			res.send("指定代理人不存在")
 
 
 
 
 
 
-	# new 填表人
-	else if name ==fName
+		# new 填表人
+		else if name.indexOf(fName) != -1
 
-		dt=genDate()
-		#create data object LeaveForm("許木坤","20170101","楊文宏")
-
-
-
-		newForm=new LeaveForm(fName,genDate(),req.body.deputyName,req.body.fType)
-		newForm.setImageDir("dataPool/forms")
-		fID=newForm.getFID()
-		urlToImage newForm.getImagePath(),req.body.image
+			dt=genDate()
+			#create data object LeaveForm("許木坤","20170101","楊文宏")
 
 
+			newForm=new LeaveForm(name,genDate(),req.body.deputyName,req.body.fType)
+			newForm.setImageDir("dataPool/forms")
+			fID=newForm.getFID()
+			urlToImage newForm.getImagePath(),req.body.image
 
-		LSys.addNewForm(newForm)
 
-		LSys.submitFormByID(name,fID)
-		LSys.showArchitecture()
-		res.redirect("/mainPage")
+
+			LSys.addNewForm(newForm)
+			LSys.submitFormByID(name,fID)
+			#LSys.showArchitecture()
+
+			res.redirect("/mainPage")
 
 	else
-		form=LSys.getFormByFID(req.body.fID)
-		
+		form=LSys.getFormByFID(req.body.fID)		
 		if form isnt null
 			urlToImage form.getImagePath(),req.body.image
 			LSys.submitFormByID(name,form.getFID())
-			LSys.showArchitecture()
+			#LSys.showArchitecture()
 			res.redirect("/mainPage")
 
 
@@ -271,4 +271,4 @@ genDate =()->
 	m=dt.getMonth() 
 	sec=dt.getSeconds() 
 
-	return year+"."+month+"."+day+"."+h+"."+m+"."+sec
+	return year+"_"+month+"_"+day+"_"+h+"_"+m+"_"+sec

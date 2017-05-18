@@ -55,7 +55,7 @@ router.use Passport.initialize()
 router.get '/login', (req, res, next) ->
 	
 	LSys = LeaveSystemSingleton.get()
-	LSys.showArchitecture()
+	#LSys.showArchitecture()
 
 
 	res.render "login",
@@ -102,7 +102,8 @@ router.post '/newStaff',uploadMark.single("mark"),(req,res)->
 	
 
 	#should merge into people module
-	levelTlb={"大隊長":1,"副大隊長":2,"分隊長":3,"小隊長":4,"隊員":5}
+	levelTlb={"局長":1,"副局長":2,"秘書":3,"主任":4,"科長":4,"書記":5,"技士":5,"科員":5,"機要科員":5,"辦事員":5,"技佐":5,"大隊長":6,"副大隊長":7,"分隊長":8,"小隊長":9,"隊員":10}
+
 
 
 	debug req.file
