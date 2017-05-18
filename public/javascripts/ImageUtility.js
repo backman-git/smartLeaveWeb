@@ -31,9 +31,9 @@
       var ctx, x, y;
       ctx = $("#Canvas")[0].getContext('2d');
       if (ID === "startH" || ID === "finishH") {
-        ctx.font = "30px DFKai-sb";
+        ctx.font = "20px DFKai-sb";
       } else {
-        ctx.font = "50px DFKai-sb";
+        ctx.font = "40px DFKai-sb";
       }
       x = parseInt($("#" + ID).css("left"));
       y = parseInt($("#" + ID).css("top"));

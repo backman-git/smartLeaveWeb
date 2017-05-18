@@ -54,7 +54,7 @@ $(document).ready ->
 		if ID=="startH" or ID=="finishH"
 			ctx.font = "20px DFKai-sb"
 		else	
-			ctx.font = "50px DFKai-sb"
+			ctx.font = "40px DFKai-sb"
 		x=parseInt ( $("#"+ID).css("left") )
 	
 		
