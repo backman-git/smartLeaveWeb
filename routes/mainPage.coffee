@@ -41,7 +41,7 @@ router.get '/', (req, res, next) ->
 		
 		debug pWList
 
-		res.render 'mainPage',
+		res.render 'mainPage/',
 		mainScript: '../javascripts/MainUtility.js'
 		name: pNode["name"],
 		style: "./stylesheets/mainPage.css",
