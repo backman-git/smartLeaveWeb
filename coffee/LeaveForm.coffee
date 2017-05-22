@@ -9,9 +9,9 @@ class LeaveForm
 		
 
 		@finish=false
-		@state={"individual":false,"deputy":false,"firstBoss":false,"secondBoss":false,"personnel":false}
+		@state={"individual":false,"deputy":false,"firstBoss":false,"secondBoss":false,"personnel":false,"cancel":false}
 
-		@roles={"individual":"","deputy":"","boss":""}
+		@roles={"individual":"","deputy":"","boss":"","canceler":""}
 		this.setRoleName("deputy",deputy)
 		this.setRoleName("individual",@name)
 
@@ -35,6 +35,14 @@ class LeaveForm
 		else
 			return false
 
+
+
+	isCancel:()->
+		return @state["cancel"]
+
+	cancelByName:(name)->
+		this.setRoleName("canceler",name)
+		this.setState("cancel",true)
 
 	getType:()->
 		return @type

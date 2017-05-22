@@ -104,9 +104,6 @@ class LeaveSystem
 
 
 
-
-
-
 	getRole:(name,FID)->
 
 		form=this.getFormByFID(FID)
@@ -167,6 +164,17 @@ class LeaveSystem
 				debug err
 
 		 )
+
+
+	cancelFormByID:(name,FID)->
+
+		p=@treeHT[name].value
+		form=p.retriveFormByFID(FID)
+		form.cancelByName(name)
+
+		
+		
+
 
 
 

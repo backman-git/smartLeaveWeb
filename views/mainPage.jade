@@ -83,9 +83,13 @@ html
 									if l["finish"] == true
 										th
 											a(class="uk-button-success uk-button-large" href="./"+l['imageUri']) 檢視 
+									
+									else if l["state"]["cancel"] == true
+										th
+											a(class="uk-button-danger uk-button-large" href="./"+l['imageUri']) #{l["roles"]["canceler"]} 取消
 									else
 										th
-											a(class="uk-button-danger uk-button-large" href="./"+l['imageUri']) 檢視 
+											a(class=".uk-button-primary	uk-button-large" href="./"+l['imageUri']) 檢視 
 						else
 							tr
 								th 目前未有資料
@@ -116,7 +120,7 @@ html
 											a(class="uk-button-success uk-button-large" href="./"+l['imageUri']) 檢視 
 									else
 										th
-											a(class="uk-button-danger uk-button-large" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
+											a(class="uk-button-primary uk-button-large" href="/mainPage/editForm?fID="+l["fileID"]) 簽核
 						else
 							tr
 								th 目前未有資料

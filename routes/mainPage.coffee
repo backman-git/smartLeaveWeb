@@ -116,6 +116,7 @@ router.get '/editForm' , (req,res,next)->
 			style: "../stylesheets/editForm.css"
 			role:"deputy"
 			markID:req.cookies["ID"]
+			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
 		
 
@@ -130,6 +131,7 @@ router.get '/editForm' , (req,res,next)->
 			style: "../stylesheets/editForm.css"
 			role:"firstBoss"
 			markID:req.cookies["ID"]
+			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
 			fType:form.getType()
 
@@ -143,6 +145,7 @@ router.get '/editForm' , (req,res,next)->
 			style: "../stylesheets/editForm.css"
 			role:"firstBoss"
 			markID:req.cookies["ID"]
+			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
 			fType:form.getType()
 
@@ -155,6 +158,7 @@ router.get '/editForm' , (req,res,next)->
 			style: "../stylesheets/editForm.css"
 			role:"secondBoss"
 			markID:req.cookies["ID"]
+			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
 			fType:form.getType()
 
@@ -170,11 +174,27 @@ router.get '/editForm' , (req,res,next)->
 			style: "../stylesheets/editForm.css"
 			role:"personnel"
 			markID:req.cookies["ID"]
+			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
 
 
-	
-	
+
+
+router.post '/cancelForm',(req,res)->
+
+	debug req.body.name,req.body.fID
+
+	if req.body.name? and req.body.fID?
+		LSys = LeaveSystemSingleton.get()
+		LSys.cancelFormByID(req.body.name,req.body.fID)
+		form=LSys.getFormByFID(req.body.fID)
+		debug form.getState()
+
+
+	res.redirect("/mainPage")
+
+
+
 
 
 #upload

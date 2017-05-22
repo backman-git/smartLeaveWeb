@@ -199,6 +199,10 @@ $(document).ready ->
 		
 		return 
 
+
+
+
+
 	
 	saveImgtoServer =(sDay,fDay)->
 
@@ -231,8 +235,28 @@ $(document).ready ->
 	
 
 
+	cancelForm = (event)->
+		url = "/mainPage/cancelForm"
+
+		if confirm("確定取消假單?")
+			$.post url,
+				{name:event.data.name,fID:$("#fID").val()},
+				(data,status)-> 
+					window.location.href = "../mainPage"
+					return
+			return
+
+
+		
+
+		return 
+
+
+
 
 	$("#submit").click(checkForm)
+
+	$("#cancel").click({name:$("#editor").val()},cancelForm)
 
 	pButtonID=$('#PersonalMarkButton').val()
 	$('#PersonalMarkButton').click({p1:"../dataPool/mark/"+pButtonID+".png"},showMark)
