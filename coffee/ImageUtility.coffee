@@ -221,7 +221,7 @@ $(document).ready ->
 
 		if fDay == -1 and sDay ==-1
 			fType=null
-		else if fDay-sDay <3
+		else if fDay.getDay()-sDay.getDay() <3
 			fType="short"
 		else
 			fType="long"
