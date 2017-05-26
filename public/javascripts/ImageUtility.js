@@ -57,44 +57,51 @@
       imageFactory.drawImage(bgImg, parseInt($("#" + ID).css("left")), parseInt($("#" + ID).css("top")));
     };
     checkForm = function() {
-      var alertMsg, fDay, sDay;
+      var alertMsg, diffDay, fDay, fDay_ms, sDay, sDay_ms;
       fDay = -1;
       sDay = -1;
       alertMsg = "";
       switch ($("#role").val()) {
         case "individual":
-          fDay = parseInt($('#finishDay').val().split("/")[2], 10);
-          sDay = parseInt($('#startDay').val().split('/')[2], 10);
+          fDay = new Date($('#finishDay').val());
+          sDay = new Date($('#startDay').val());
+          fDay_ms = fDay.getTime();
+          sDay_ms = sDay.getTime();
           if (isNaN(fDay) || isNaN(sDay)) {
-            alertMsg += "日期未填\n";
+            alertMsg += "日期未填!\n";
+          }
+          if (sDay_ms > fDay_ms) {
+            alertMsg += "結束時間小於開始時間!\n";
           }
           if ($('#PersonalMarkButton').text() !== "") {
-            alertMsg += "please stamp the mark!\n";
+            alertMsg += "請蓋章!\n";
           }
           if ($('#deputyName').val() === "") {
-            alertMsg += "deputy name is empty!\n";
+            alertMsg += "代理人姓名空白!\n";
           }
           break;
         case "deputy":
           if ($('#DeputyMarkButton').text() !== "") {
-            alertMsg += "please stamp the mark!\n";
+            alertMsg += "請蓋章!\n";
           }
           break;
         case "firstBoss":
           if ($('#supervisorButton').text() !== "") {
-            alertMsg += "please stamp the mark!\n";
+            alertMsg += "請蓋章!\n";
           }
           break;
         case "secondBoss":
           if ($('#secondSupervisorButton').text() !== "") {
-            alertMsg += "please stamp the mark!\n";
+            alertMsg += "請蓋章!\n";
           }
       }
       if (alertMsg === "") {
-        $('#useDay').text(fDay - sDay + $("#useDay").val());
+        diffDay = (fDay_ms - sDay_ms) / (1000 * 60 * 60 * 24);
+        $('#useDay').text(diffDay + $("#useDay").val());
         return saveFormToImg(sDay, fDay);
       } else {
-        alertMsg += "please fill empty fields!";
+        alertMsg += "==============\n";
+        alertMsg += "請完成上述資料";
         return alert(alertMsg);
       }
     };

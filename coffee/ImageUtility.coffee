@@ -103,39 +103,46 @@ $(document).ready ->
 			when "individual"
 
 				#check day 
-				fDay= parseInt($('#finishDay').val().split("/")[2],10)
-				sDay= parseInt($('#startDay').val().split('/')[2],10)
-				if isNaN(fDay) or isNaN(sDay)
-					alertMsg+="日期未填\n" 
+				fDay= new Date($('#finishDay').val())
+				sDay= new Date($('#startDay').val())
 
+				fDay_ms=fDay.getTime()
+				sDay_ms=sDay.getTime()
+
+				if isNaN(fDay) or isNaN(sDay)
+					alertMsg+="日期未填!\n" 
+
+				if sDay_ms>fDay_ms
+					alertMsg+="結束時間小於開始時間!\n"
 
 				if $('#PersonalMarkButton').text() !=""
-					alertMsg+="please stamp the mark!\n"
+					alertMsg+="請蓋章!\n"
 
 				#should check if the person exist!
 				if $('#deputyName').val()==""
-					alertMsg+="deputy name is empty!\n"
+					alertMsg+="代理人姓名空白!\n"
 
 
 			when "deputy"
 				if $('#DeputyMarkButton').text() !=""
-					alertMsg+="please stamp the mark!\n"
+					alertMsg+="請蓋章!\n"
 
 			when "firstBoss"
 				if $('#supervisorButton').text() !=""
-					alertMsg+="please stamp the mark!\n"
+					alertMsg+="請蓋章!\n"
 			when "secondBoss"
 				if $('#secondSupervisorButton').text() !=""
-					alertMsg+="please stamp the mark!\n"
+					alertMsg+="請蓋章!\n"
 
 
-		if alertMsg==""
+		if alertMsg=="" 
 			#change use day
-			$('#useDay').text(fDay-sDay+$("#useDay").val())
-
+			diffDay= ( fDay_ms-sDay_ms )/(1000*60*60*24)
+			$('#useDay').text(diffDay+$("#useDay").val())
 			saveFormToImg(sDay,fDay)
 		else
-			alertMsg+="please fill empty fields!"
+			alertMsg+="==============\n"
+			alertMsg+="請完成上述資料"
 			alert(alertMsg)
 
 
