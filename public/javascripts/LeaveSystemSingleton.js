@@ -36,7 +36,11 @@
     };
 
     LeaveSystem.prototype.getPeopleNodeByName = function(name) {
-      return this.treeHT[name].value;
+      if (!(name in this.treeHT)) {
+        return null;
+      } else {
+        return this.treeHT[name].value;
+      }
     };
 
     LeaveSystem.prototype.getSecurityLevelByFID = function(FID) {
@@ -46,7 +50,7 @@
     };
 
     LeaveSystem.prototype.getNameByFID = function(FID) {
-      FID = FID.split("-", 2);
+      FID = FID.split("^", 2);
       return FID[1];
     };
 
@@ -82,37 +86,32 @@
     };
 
     LeaveSystem.prototype.addFormToFormsList = function(form) {
-      if (form.name in this.formsList) {
-        return this.formsList[form.name][form.fileID] = form;
-      } else {
-        this.formsList[form.name] = {};
-        return this.formsList[form.name][form.fileID] = form;
-      }
+      var pOwner;
+      pOwner = this.getPeopleByName(form.name);
+      return pOwner.addFormToMyFormList(form);
     };
 
     LeaveSystem.prototype.addNewForm = function(form) {
+      debug(form);
       this.treeHT[form.name].value.addFormToWaitHQueue(form);
       return this.addFormToFormsList(form);
     };
 
-    LeaveSystem.prototype.getFormsList = function() {
-      return clone(this.formsList);
-    };
-
     LeaveSystem.prototype.getRole = function(name, FID) {
       var fState, form, role;
-      form = getFormByFID(FID);
+      form = this.getFormByFID(FID);
+      debug(form);
       fState = form.getState();
       role = "";
       if (this.getSecurityLevelByName(name) === 0) {
         role = "personnel";
-      } else if (this.getNameByFID(FID) === name) {
+      } else if (this.getNameByFID(FID) === name && fState['individual'] === false) {
         role = "individual";
       } else if (this.getSecurityLevelByName(name) >= this.getSecurityLevelByFID(FID) && fState['deputy'] === false) {
         role = "deputy";
       } else if (this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID) && fState['firstBoss'] === false) {
         role = "firstBoss";
-      } else if (this.getSecurityLevelByName(name) < this.getSecurityLevelByFID(FID) && fState['secondBoss'] === false) {
+      } else if (this.getSecurityLevelByName(name) <= this.getSecurityLevelByFID(FID) && fState['secondBoss'] === false) {
         role = "secondBoss";
       } else {
         role = "Error";
@@ -133,46 +132,101 @@
     };
 
     LeaveSystem.prototype.pushToReviewQ = function(form) {
-      return this.treeHT["假單庫"].value.addFormToWaitHQueue(form);
+      var pAdmin, pOwner;
+      this.treeHT["假單庫"].value.addFormToWaitHQueue(form);
+      pAdmin = this.treeHT["假單庫"].value;
+      pOwner = this.treeHT[form.name].value;
+      debug(">>>>>>>>>>>>>>>>>>" + pOwner.useDay);
+      debug("final here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      People.update({
+        name: pOwner.name
+      }, {
+        useDay: pOwner.useDay,
+        myFormList: pOwner.myFormList
+      }, function(err, raw) {
+        if (err) {
+          return debug(err);
+        }
+      });
+      return People.update({
+        _id: pAdmin["_id"]
+      }, {
+        waitHQueue: pAdmin["waitHQueue"]
+      }, function(err, raw) {
+        if (err) {
+          return debug(err);
+        }
+      });
+    };
+
+    LeaveSystem.prototype.cancelFormByID = function(name, FID) {
+      var form, p;
+      p = this.treeHT[name].value;
+      form = p.retriveFormByFID(FID);
+      return form.cancelByName(name);
     };
 
     LeaveSystem.prototype.submitFormByID = function(name, FID) {
       var deputy, form, p, pParent, role;
       role = this.getRole(name, FID);
+      debug(role);
       p = this.treeHT[name].value;
       form = p.retriveFormByFID(FID);
       form.setState(role, true);
-      debug(role);
       if (role === "personnel") {
         p.addFormToWaitHQueue(form);
+        People.update({
+          _id: p["_id"]
+        }, {
+          waitHQueue: p["waitHQueue"]
+        }, function(err, raw) {
+          if (err) {
+            return debug(err);
+          }
+        });
         return this.pushToReviewQ(form);
       } else if (role === "firstBoss") {
-        pParent = this.treeHT[name].getParent().value;
-        return pParent.addFormToWaitHQueue(form);
+        if (p.level === 1) {
+          p.addFormToWaitHQueue(form);
+          return 'People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
+        } else {
+          pParent = this.treeHT[name].getParent().value;
+          pParent.addFormToWaitHQueue(form);
+          return 'People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
+        }
       } else if (role === "secondBoss" && form.getType() === "short") {
         p.addFormToWaitHQueue(form);
+        'People.update({_id:p["_id"]},{waitHQueue:p["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
         return this.pushToReviewQ(form);
       } else if (role === "secondBoss" && form.getType() === "long") {
         pParent = this.treeHT[name].getParent().value;
-        return pParent.addFormToWaitHQueue(form);
+        pParent.addFormToWaitHQueue(form);
+        return 'People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
       } else if (role === "deputy") {
         pParent = this.treeHT[name].getParent().value;
-        return pParent.addFormToWaitHQueue(form);
+        pParent.addFormToWaitHQueue(form);
+        return 'People.update({_id:pParent["_id"]},{waitHQueue:pParent["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
       } else if (role === "individual") {
         deputy = this.treeHT[form.getRoleName("deputy")];
         deputy = deputy.value;
-        return deputy.addFormToWaitHQueue(form);
+        deputy.addFormToWaitHQueue(form);
+        p.setUseDay(pOwner.useDay + form.reqDay);
+        return 'People.update({_id:deputy["_id"]},{waitHQueue:deputy["waitHQueue"]},(err,raw)->\n	if err \n		debug err\n\n)';
       }
     };
 
     LeaveSystem.prototype.getPersonFormListByName = function(name) {
-      return clone(this.formsList[name]);
+      var pOwner;
+      pOwner = this.getPeopleByName(name);
+      return clone(pOwner.getMyFormList());
     };
 
     LeaveSystem.prototype.getFormByFID = function(id) {
       var fList, name;
       name = this.getNameByFID(id);
+      debug(name);
       fList = this.getPersonFormListByName(name);
+      debug(fList);
       return clone(fList[id]);
     };
 
@@ -265,7 +319,7 @@
       ref = this.treeNodes;
       for (key in ref) {
         n = ref[key];
-        if (n.value.boss !== "") {
+        if (n.value.boss !== "" && (this.treeNodes[n.value.boss] != null)) {
           n.setParent(this.treeNodes[n.value.boss]);
         }
       }

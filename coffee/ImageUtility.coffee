@@ -93,9 +93,9 @@ $(document).ready ->
 
 	checkForm= ()->
 
-		fDay=-1
-		sDay=-1
-
+		fDay=null
+		sDay=null
+		deffDay=0
 		alertMsg=""
 
 		switch $("#role").val()
@@ -138,8 +138,7 @@ $(document).ready ->
 		if alertMsg=="" 
 			#change use day
 			diffDay= ( fDay_ms-sDay_ms )/(1000*60*60*24)
-			$('#useDay').text(diffDay+$("#useDay").val())
-			saveFormToImg(sDay,fDay)
+			saveFormToImg(diffDay)
 		else
 			alertMsg+="==============\n"
 			alertMsg+="請完成上述資料"
@@ -148,7 +147,7 @@ $(document).ready ->
 
 	delay =(ms,func) -> setTimeout func,ms
 
-	saveFormToImg = (sDay,fDay)->
+	saveFormToImg = (diffDay)->
 
 		
 		if $('#team').length
@@ -174,6 +173,7 @@ $(document).ready ->
 
 		if $('#useDay').length
 			printTextToForm("useDay")
+			console.log $('#useDay').val()
 
 		if $("#PersonalMarkButton").length
 			printImgtoForm("PersonalMarkButton")
@@ -199,7 +199,7 @@ $(document).ready ->
 		if $('#finishH').length
 			printTextToForm('finishH')
 
-		delay 30, ->saveImgtoServer sDay,fDay
+		delay 30, ->saveImgtoServer diffDay
 
 		
 		
@@ -211,23 +211,23 @@ $(document).ready ->
 
 
 	
-	saveImgtoServer =(sDay,fDay)->
+	saveImgtoServer =(diffDay)->
 
 		url = "/mainPage/upLoadForm"
 		data = $("#Canvas")[0].toDataURL()
 
-	
+		
 		fType=""
-
-		if fDay == -1 and sDay ==-1
+		
+		if diffDay==0
 			fType=null
-		else if fDay.getDay()-sDay.getDay() <3
+		else if  diffDay <3
 			fType="short"
 		else
 			fType="long"
-
+		console.log diffDay
 		$.post url,
-				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val(),fType:fType  },
+				{image:data,fID:$("#fID").val(),name:$("#name").text(),deputyName:$("#deputyName").val(),fType:fType,reqDay:diffDay  },
 				(data,status)-> 
 
 					if data =="指定代理人不存在"

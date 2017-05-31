@@ -53,9 +53,7 @@ html
 			if availableDay
 				p(id="availableDay",class="availableDay",size="50px")
 					font(size ="20px") #{availableDay}
-			if useDay
-				p(id="useDay",class="useDay",size="50px")
-					font(size ="20px") #{useDay} 
+			
 
 
 			case role
@@ -111,6 +109,9 @@ html
 				when "personnel"
 					textarea(class="textArea1",rows="10",cols="20", maxlength="500" id="officeMsg") 
 					textarea(class="textArea2",rows="8",cols="20" , maxlength="500" id="etc") 
+					if useDay
+						p(id="useDay",class="useDay",size="50px")
+							font(size ="20px") #{useDay} 
 					
 			
 

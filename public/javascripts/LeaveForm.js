@@ -3,21 +3,27 @@
   var LeaveForm;
 
   LeaveForm = (function() {
-    function LeaveForm(name1, date, deputy) {
+    function LeaveForm(name1, date, deputy, type, reqDay) {
       this.name = name1;
       this.date = date;
-      this.fileID = this.date + "-" + this.name;
+      this.type = type;
+      this.reqDay = reqDay;
+      this.fileID = this.date + "^" + this.name;
       this.imagePath = "";
+      this.finish = false;
       this.state = {
         "individual": false,
         "deputy": false,
-        "boss": false,
-        "personnel": false
+        "firstBoss": false,
+        "secondBoss": false,
+        "personnel": false,
+        "cancel": false
       };
       this.roles = {
         "individual": "",
         "deputy": "",
-        "boss": ""
+        "boss": "",
+        "canceler": ""
       };
       this.setRoleName("deputy", deputy);
       this.setRoleName("individual", this.name);
@@ -36,6 +42,29 @@
       return this.imageUri;
     };
 
+    LeaveForm.prototype.isFinish = function() {
+      if (this.type === "short" && this.state['individual'] && this.state['deputy'] && this.state['firstBoss'] && this.state['secondBoss']) {
+        return true;
+      } else if (this.type === "long" && this.state['individual'] && this.state['deputy'] && this.state['firstBoss'] && this.state['secondBoss'] && this.state['personnel']) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    LeaveForm.prototype.isCancel = function() {
+      return this.state["cancel"];
+    };
+
+    LeaveForm.prototype.cancelByName = function(name) {
+      this.setRoleName("canceler", name);
+      return this.setState("cancel", true);
+    };
+
+    LeaveForm.prototype.getType = function() {
+      return this.type;
+    };
+
     LeaveForm.prototype.getOwner = function() {
       return this.name;
     };
@@ -45,7 +74,8 @@
     };
 
     LeaveForm.prototype.setState = function(stateID, value) {
-      return this.state[stateID] = value;
+      this.state[stateID] = value;
+      return this.finish = this.isFinish();
     };
 
     LeaveForm.prototype.getState = function() {

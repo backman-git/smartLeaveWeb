@@ -31,7 +31,7 @@
       pFormList = LSys.getPersonFormListByName(pNode["name"]);
       pWList = pNode.getWaitHQueue();
       debug(pWList);
-      return res.render('mainPage', {
+      return res.render('mainPage/', {
         mainScript: '../javascripts/MainUtility.js',
         name: pNode["name"],
         style: "./stylesheets/mainPage.css",
@@ -75,7 +75,6 @@
         title: pNode["title"],
         startCareerDay: pNode["startCareerDate"],
         availableDay: "" + pNode["availableDay"],
-        useDay: "" + pNode["useDay"],
         role: "individual",
         markID: req.cookies["ID"],
         fID: 0
@@ -91,6 +90,7 @@
           style: "../stylesheets/editForm.css",
           role: "deputy",
           markID: req.cookies["ID"],
+          editor: sessionManager.getSessionName(req.cookies["ID"]),
           fID: form.getFID()
         });
       } else if (form.getType() === 'short' && state['firstBoss'] === false) {
@@ -101,6 +101,7 @@
           style: "../stylesheets/editForm.css",
           role: "firstBoss",
           markID: req.cookies["ID"],
+          editor: sessionManager.getSessionName(req.cookies["ID"]),
           fID: form.getFID(),
           fType: form.getType()
         });
@@ -112,6 +113,7 @@
           style: "../stylesheets/editForm.css",
           role: "firstBoss",
           markID: req.cookies["ID"],
+          editor: sessionManager.getSessionName(req.cookies["ID"]),
           fID: form.getFID(),
           fType: form.getType()
         });
@@ -123,6 +125,7 @@
           style: "../stylesheets/editForm.css",
           role: "secondBoss",
           markID: req.cookies["ID"],
+          editor: sessionManager.getSessionName(req.cookies["ID"]),
           fID: form.getFID(),
           fType: form.getType()
         });
@@ -133,11 +136,25 @@
           form: form.getImageUri(),
           style: "../stylesheets/editForm.css",
           role: "personnel",
+          useDay: "" + (parseInt(pNode["useDay"]) + form.reqDay),
           markID: req.cookies["ID"],
+          editor: sessionManager.getSessionName(req.cookies["ID"]),
           fID: form.getFID()
         });
       }
     }
+  });
+
+  router.post('/cancelForm', function(req, res) {
+    var LSys, form;
+    debug(req.body.name, req.body.fID);
+    if ((req.body.name != null) && (req.body.fID != null)) {
+      LSys = LeaveSystemSingleton.get();
+      LSys.cancelFormByID(req.body.name, req.body.fID);
+      form = LSys.getFormByFID(req.body.fID);
+      debug(form.getState());
+    }
+    return res.redirect("/mainPage");
   });
 
   router.post('/uploadForm', function(req, res) {
@@ -147,26 +164,25 @@
     name = sessionManager.getSessionName(ID);
     fName = req.body.name.replace(" ", "");
     debug("upload By:" + name);
-    pNode = LSys.getPeopleNodeByName(req.body.deputyName);
-    debug(pNode);
-    if (pNode === null) {
-      return res.send("指定代理人不存在");
-    } else if (name === fName) {
-      dt = genDate();
-      newForm = new LeaveForm(fName, genDate(), req.body.deputyName, req.body.fType);
-      newForm.setImageDir("dataPool/forms");
-      fID = newForm.getFID();
-      urlToImage(newForm.getImagePath(), req.body.image);
-      LSys.addNewForm(newForm);
-      LSys.submitFormByID(name, fID);
-      LSys.showArchitecture();
-      return res.redirect("/mainPage");
+    if (req.body.deputyName != null) {
+      pNode = LSys.getPeopleNodeByName(req.body.deputyName);
+      if (pNode === null && req.body.fID === "0") {
+        return res.send("指定代理人不存在");
+      } else if (name.indexOf(fName) !== -1) {
+        dt = genDate();
+        newForm = new LeaveForm(name, genDate(), req.body.deputyName, req.body.fType, req.body.reqDay);
+        newForm.setImageDir("dataPool/forms");
+        fID = newForm.getFID();
+        urlToImage(newForm.getImagePath(), req.body.image);
+        LSys.addNewForm(newForm);
+        LSys.submitFormByID(name, fID);
+        return res.redirect("/mainPage");
+      }
     } else {
       form = LSys.getFormByFID(req.body.fID);
       if (form !== null) {
         urlToImage(form.getImagePath(), req.body.image);
         LSys.submitFormByID(name, form.getFID());
-        LSys.showArchitecture();
         return res.redirect("/mainPage");
       }
     }
@@ -190,7 +206,7 @@
     h = dt.getHours();
     m = dt.getMonth();
     sec = dt.getSeconds();
-    return year + "." + month + "." + day + "." + h + "." + m + "." + sec;
+    return year + "_" + month + "_" + day + "_" + h + "_" + m + "_" + sec;
   };
 
 }).call(this);

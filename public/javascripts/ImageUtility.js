@@ -57,9 +57,10 @@
       imageFactory.drawImage(bgImg, parseInt($("#" + ID).css("left")), parseInt($("#" + ID).css("top")));
     };
     checkForm = function() {
-      var alertMsg, diffDay, fDay, fDay_ms, sDay, sDay_ms;
-      fDay = -1;
-      sDay = -1;
+      var alertMsg, deffDay, diffDay, fDay, fDay_ms, sDay, sDay_ms;
+      fDay = null;
+      sDay = null;
+      deffDay = 0;
       alertMsg = "";
       switch ($("#role").val()) {
         case "individual":
@@ -97,8 +98,7 @@
       }
       if (alertMsg === "") {
         diffDay = (fDay_ms - sDay_ms) / (1000 * 60 * 60 * 24);
-        $('#useDay').text(diffDay + $("#useDay").val());
-        return saveFormToImg(sDay, fDay);
+        return saveFormToImg(diffDay);
       } else {
         alertMsg += "==============\n";
         alertMsg += "請完成上述資料";
@@ -108,7 +108,7 @@
     delay = function(ms, func) {
       return setTimeout(func, ms);
     };
-    saveFormToImg = function(sDay, fDay) {
+    saveFormToImg = function(diffDay) {
       if ($('#team').length) {
         printTextToForm("team");
       }
@@ -132,6 +132,7 @@
       }
       if ($('#useDay').length) {
         printTextToForm("useDay");
+        console.log($('#useDay').val());
       }
       if ($("#PersonalMarkButton").length) {
         printImgtoForm("PersonalMarkButton");
@@ -160,27 +161,29 @@
         printTextToForm('finishH');
       }
       delay(30, function() {
-        return saveImgtoServer(sDay, fDay);
+        return saveImgtoServer(diffDay);
       });
     };
-    saveImgtoServer = function(sDay, fDay) {
+    saveImgtoServer = function(diffDay) {
       var data, fType, url;
       url = "/mainPage/upLoadForm";
       data = $("#Canvas")[0].toDataURL();
       fType = "";
-      if (fDay === -1 && sDay === -1) {
+      if (diffDay === 0) {
         fType = null;
-      } else if (fDay.getDay() - sDay.getDay() < 3) {
+      } else if (diffDay < 3) {
         fType = "short";
       } else {
         fType = "long";
       }
+      console.log(diffDay);
       $.post(url, {
         image: data,
         fID: $("#fID").val(),
         name: $("#name").text(),
         deputyName: $("#deputyName").val(),
-        fType: fType
+        fType: fType,
+        reqDay: diffDay
       }, function(data, status) {
         if (data === "指定代理人不存在") {
           alert(data);

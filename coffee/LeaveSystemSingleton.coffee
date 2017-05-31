@@ -147,7 +147,7 @@ class LeaveSystem
 
 		pOwner=@treeHT[form.name].value
 
-		pOwner.setUseDay(pOwner.useDay+1)
+		
 
 
 		debug "final here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -183,7 +183,6 @@ class LeaveSystem
 
 
 		role=this.getRole(name,FID)
-		debug role
 		p=@treeHT[name].value
 		form=p.retriveFormByFID(FID)
 		form.setState(role,true)
@@ -275,6 +274,10 @@ class LeaveSystem
 			deputy =@treeHT[form.getRoleName("deputy") ]
 			deputy=deputy.value
 			deputy.addFormToWaitHQueue(form)
+
+			#By pass should fix
+			p.setUseDay(parseInt(p.useDay)+parseInt(form.reqDay))
+			@treeHT[p.name].value=p
 
 			'''
 			People.update({_id:deputy["_id"]},{waitHQueue:deputy["waitHQueue"]},(err,raw)->

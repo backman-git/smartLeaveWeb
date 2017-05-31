@@ -2,7 +2,7 @@
 
 class LeaveForm
 
-	constructor:(@name,@date,deputy,@type)->
+	constructor:(@name,@date,deputy,@type,@reqDay)->
 		#so important!!!!!
 		@fileID=@date+"^"+@name
 		@imagePath=""

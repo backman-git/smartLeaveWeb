@@ -93,7 +93,6 @@ router.get '/editForm' , (req,res,next)->
 		title:pNode["title"]
 		startCareerDay:pNode["startCareerDate"]
 		availableDay:""+pNode["availableDay"]
-		useDay:""+(pNode["useDay"])
 		role:"individual"
 		markID:req.cookies["ID"]
 		fID:0
@@ -118,6 +117,7 @@ router.get '/editForm' , (req,res,next)->
 			markID:req.cookies["ID"]
 			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
+
 		
 
 		#two type of form
@@ -167,12 +167,17 @@ router.get '/editForm' , (req,res,next)->
 
 		else 
 			#personnel office
+
+			applicant=LSys.getPeopleNodeByName(form.getOwner())
+			nUseDay= parseInt(applicant.useDay)
+			debug "useDay: "+nUseDay+","+parseInt(applicant.useDay)+","+parseInt(form.reqDay)+","+applicant
 			res.render 'formEditor',
 			imgScript: '../javascripts/ImageUtility.js'
 			mainScript: '../javascripts/MainUtility.js'
 			form: form.getImageUri()
 			style: "../stylesheets/editForm.css"
 			role:"personnel"
+			useDay:""+nUseDay
 			markID:req.cookies["ID"]
 			editor:sessionManager.getSessionName(req.cookies["ID"])
 			fID:form.getFID()
@@ -232,7 +237,7 @@ router.post '/uploadForm',(req,res)->
 			#create data object LeaveForm("許木坤","20170101","楊文宏")
 
 
-			newForm=new LeaveForm(name,genDate(),req.body.deputyName,req.body.fType)
+			newForm=new LeaveForm(name,genDate(),req.body.deputyName,req.body.fType,req.body.reqDay)
 			newForm.setImageDir("dataPool/forms")
 			fID=newForm.getFID()
 			urlToImage newForm.getImagePath(),req.body.image
