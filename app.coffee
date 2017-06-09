@@ -15,8 +15,7 @@ users = require './routes/users'
 
 #------
 mainPage = require './routes/mainPage'
-
-
+security = require './routes/security'
 
 
 app = express()
@@ -49,6 +48,7 @@ app.use express.static path.join __dirname, 'public'
 app.use '/mainPage', mainPage
 app.use '/', routes
 app.use '/users', users
+app.use '/security', security
 
 
 

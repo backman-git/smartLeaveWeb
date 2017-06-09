@@ -10,10 +10,13 @@ html
 		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.css")
 		link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/components/datepicker.gradient.min.css")
 		script(type="text/javascript",src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.js" )
+
+
+		
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.js")
 		script(src="../uikit-2.27.2/js/components/datepicker.min.js")
+		script(data-main="#{imgScript}" src="../javascripts/require.js")
 		script(src="#{mainScript}",type="text/javascript")
-		script(src="#{imgScript}" ,type="text/javascript")
  
 	body
 
@@ -82,7 +85,10 @@ html
 
 					// mark	
 
-					button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
+					img(id="SQR" class="personalMarkButton")
+					//button(id="PersonalMarkButton" class="personalMarkButton" value="#{markID}") 蓋章
+					
+
 					// deputy
 					p(class="deputyMsg") 請指定代理人
 					div(class="deputyInput")
