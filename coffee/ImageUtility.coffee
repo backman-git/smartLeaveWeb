@@ -28,18 +28,38 @@ define(['./securityQR'],(securityQR)->
 			return
 
 	showMark = (path ) ->
-			#$(this).text("")
-			
-			#str1="url("
-			#str2=")"
-			#str3=str1.concat event.data.p1
-			#str3=str3.concat str2
-			#$(this).css("background-image",str3  )
-			$(this).css("height","80px"  )
-			$(this).css("width","200px"  )
-			$(this).css("left","300px"  )
+	
+		
 
-			document.getElementById("SQR").src=path
+			#may change to multiple !
+			
+			$("#SQR").css("height","80px"  )
+			$("#SQR").css("width","200px"  )
+			
+			#bypass
+			if $("#SQR").attr("class") == "personalMarkButton"
+				$("#SQR").css("left","305px")
+				$("#SQR").css("top","753px")
+
+			if $("#SQR").attr("class") == "deputyMarkButton"
+				$("#SQR").css("left","305px")
+				$("#SQR").css("top","893px")
+
+			if $("#SQR").attr("class") == "supervisorMarkButtonTypeShort"
+				$("#SQR").css("left","305px")
+				$("#SQR").css("top","1030px")
+
+			if $("#SQR").attr("class") == "supervisorMarkButtonTypeLong"
+				$("#SQR").css("left","305px")
+				$("#SQR").css("top","999px")
+
+			if $("#SQR").attr("class") == "secondSupervisorMarkButtonTypeLong"
+				$("#SQR").css("left","305px")
+				$("#SQR").css("top","1080px")
+
+
+			img=document.getElementById("SQR")
+			img.src=path
 
 
 			return
@@ -76,11 +96,13 @@ define(['./securityQR'],(securityQR)->
 			
 			return
 	printImgtoForm=(ID)->
+			
 			ctx = $("#Canvas")[0].getContext('2d')
 			imageFactory =new ImageFactory ctx
-			bgImg=$("#"+ID).css("background-image")
-			bgImg=bgImg.replace('url(','').replace(')','').replace(/\"/gi, "")
-			imageFactory.drawImage( bgImg , parseInt($("#"+ID).css("left")) , parseInt($("#"+ID).css("top")) ) 
+			#bgImg=$("#"+ID).css("background-image")
+			#bgImg=bgImg.replace('url(','').replace(')','').replace(/\"/gi, "")
+		
+			imageFactory.drawImage( $("#"+ID).attr("src") , parseInt($("#"+ID).css("left")) , parseInt($("#"+ID).css("top")) ) 
 
 			return 
 

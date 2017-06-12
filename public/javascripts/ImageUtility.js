@@ -21,10 +21,31 @@
       };
     };
     showMark = function(path) {
-      $(this).css("height", "80px");
-      $(this).css("width", "200px");
-      $(this).css("left", "300px");
-      document.getElementById("SQR").src = path;
+      var img;
+      $("#SQR").css("height", "80px");
+      $("#SQR").css("width", "200px");
+      if ($("#SQR").attr("class") === "personalMarkButton") {
+        $("#SQR").css("left", "305px");
+        $("#SQR").css("top", "753px");
+      }
+      if ($("#SQR").attr("class") === "deputyMarkButton") {
+        $("#SQR").css("left", "305px");
+        $("#SQR").css("top", "893px");
+      }
+      if ($("#SQR").attr("class") === "supervisorMarkButtonTypeShort") {
+        $("#SQR").css("left", "305px");
+        $("#SQR").css("top", "1030px");
+      }
+      if ($("#SQR").attr("class") === "supervisorMarkButtonTypeLong") {
+        $("#SQR").css("left", "305px");
+        $("#SQR").css("top", "999px");
+      }
+      if ($("#SQR").attr("class") === "secondSupervisorMarkButtonTypeLong") {
+        $("#SQR").css("left", "305px");
+        $("#SQR").css("top", "1080px");
+      }
+      img = document.getElementById("SQR");
+      img.src = path;
     };
     printTextToForm = function(ID) {
       var ctx, x, y;
@@ -48,12 +69,10 @@
       ctx.fillText($("#" + ID).val(), p.left + 30, p.top);
     };
     printImgtoForm = function(ID) {
-      var bgImg, ctx, imageFactory;
+      var ctx, imageFactory;
       ctx = $("#Canvas")[0].getContext('2d');
       imageFactory = new ImageFactory(ctx);
-      bgImg = $("#" + ID).css("background-image");
-      bgImg = bgImg.replace('url(', '').replace(')', '').replace(/\"/gi, "");
-      imageFactory.drawImage(bgImg, parseInt($("#" + ID).css("left")), parseInt($("#" + ID).css("top")));
+      imageFactory.drawImage($("#" + ID).attr("src"), parseInt($("#" + ID).css("left")), parseInt($("#" + ID).css("top")));
     };
     checkForm = function() {
       var alertMsg, deffDay, diffDay, fDay, fDay_ms, sDay, sDay_ms;

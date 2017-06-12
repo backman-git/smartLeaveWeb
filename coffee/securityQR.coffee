@@ -23,7 +23,7 @@ define(()->
 					console.log data
 					QRImgPath=data["QRImgPath"]
 					downloadingImage.src="../QR/"+QRImgPath
-
+					#downloadingImage.src="/dataPool/mark/592242de157ab22db8422653.png"
 					@tagID=data["tagID"]
 
 					return

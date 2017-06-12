@@ -51,7 +51,7 @@
           return function() {
             return _this.getInfo();
           };
-        })(this)), 500);
+        })(this)), 100);
       };
 
       return securityQR;
